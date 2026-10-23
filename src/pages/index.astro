@@ -6,53 +6,81 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
+	<body class="min-h-screen flex flex-col">
 		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to
-				build a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your{' '}
-				<code>astro.config.mjs</code> file. You can customize your setup with{' '}
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like
-				Tailwind, React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>
-					Edit this page in <code>src/pages/index.astro</code>
-				</li>
-				<li>
-					Edit the site header items in <code>src/components/Header.astro</code>
-				</li>
-				<li>
-					Add your name to the footer in <code>src/components/Footer.astro</code>
-				</li>
-				<li>
-					Check out the included blog posts in <code>src/content/blog/</code>
-				</li>
-				<li>
-					Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code>
-				</li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to{' '}
-				<a href="https://docs.astro.build/">read the docs</a> or{' '}
-				<a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out{' '}
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a> by{' '}
-				<a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+		<main class="flex-grow container mx-auto px-4 py-12">
+			
+			<!-- Hero Section -->
+			<section class="text-center mb-16">
+				<h1 class="text-5xl font-extrabold mb-4 text-gray-900">Dein Blog. Dein Stil. Starte jetzt!</h1>
+				<p class="text-xl text-gray-600 max-w-3xl mx-auto">
+					Willkommen beim Astro Blog Starter Template. Dies ist ein leichtgewichtiges, minimalistisch gestaltetes Fundament für jeden, der einen persönlichen Blog, eine Website oder ein Portfolio mit Astro erstellen möchte.
+				</p>
+			</section>
+
+			<!-- Latest Posts Overview -->
+			<section class="mb-16">
+				<h2 class="text-3xl font-bold mb-8 border-b pb-2">Neueste Beiträge</h2>
+				<div class="grid md:grid-cols-3 gap-8">
+					<!-- Placeholder für Blogbeiträge. Hier müsste die Logik zur Abfrage der Inhalte implementiert werden. -->
+					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+						<h3 class="text-xl font-semibold mb-2">Titel des ersten Beitrags</h3>
+						<p class="text-sm text-gray-500 mb-3">Datum: 15. Mai 2024</p>
+						<p class="text-gray-700 line-clamp-3">
+							Hier kommt eine kurze Zusammenfassung des ersten Blogbeitrags. Er behandelt ein spannendes Thema und zeigt, wie einfach es ist, mit Astro zu arbeiten.
+						</p>
+						<a href="/blog/first-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
+					</article>
+					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+						<h3 class="text-xl font-semibold mb-2">Titel des zweiten Beitrags</h3>
+						<p class="text-sm text-gray-500 mb-3">Datum: 10. Mai 2024</p>
+						<p class="text-gray-700 line-clamp-3">
+							Die zweite Zusammenfassung beleuchtet die Möglichkeiten von Astro und wie Sie Ihre Inhalte effektiv strukturieren können.
+						</p>
+						<a href="/blog/second-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
+					</article>
+					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
+						<h3 class="text-xl font-semibold mb-2">Titel des dritten Beitrags</h3>
+						<p class="text-sm text-gray-500 mb-3">Datum: 01. Mai 2024</p>
+						<p class="text-gray-700 line-clamp-3">
+							Ein Blick auf die neuesten Entwicklungen im Web-Bereich. Dieser Beitrag zeigt, wie modern und performant Ihr Blog sein kann.
+						</p>
+						<a href="/blog/third-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
+					</article>
+				</div>
+			</section>
+
+			<!-- Getting Started Section -->
+			<section class="mt-12 text-center">
+				<h2 class="text-3xl font-bold mb-6">So startest du mit dem Template</h2>
+				<p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+					Dieses Template ist ein minimalistischer Ausgangspunkt. Du kannst es mit Astro Integrations erweitern, um Tools wie Tailwind, React oder Vue hinzuzufügen.
+				</p>
+				<ul class="list-disc list-inside text-left mx-auto max-w-xl space-y-3">
+					<li>
+						Bearbeite diese Seite in <code class="bg-gray-100 p-1 rounded">src/pages/index.astro</code>
+					</li>
+					<li>
+						Passe den Site-Header in <code class="bg-gray-100 p-1 rounded">src/components/Header.astro</code> an
+					</li>
+					<li>
+						Füge deinen Namen im Footer hinzu in <code class="bg-gray-100 p-1 rounded">src/components/Footer.astro</code>
+					</li>
+					<li>
+						Entdecke die Blogbeiträge in <code class="bg-gray-100 p-1 rounded">src/content/blog/</code>
+					</li>
+					<li>
+						Gestalte das Layout des Blogbeitrags in <code class="bg-gray-100 p-1 rounded">src/layouts/BlogPost.astro</code>
+					</li>
+				</ul>
+				<p class="mt-8 text-gray-500">
+					Viel Spaß beim Bauen! Bei Fragen kannst du die Dokumentation lesen oder uns auf Discord beitreten.
+				</p>
+			</section>
 		</main>
 		<Footer />
 	</body>

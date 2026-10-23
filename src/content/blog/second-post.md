@@ -1,9 +1,11 @@
 ---
-title: 'Second post'
-description: 'Lorem ipsum dolor sit amet'
+title: 'Zweiter Beitrag'
+description: 'Ein Beispiel für den zweiten Blogbeitrag.'
 pubDate: 'Jul 15 2022'
 heroImage: '../../assets/blog-placeholder-4.jpg'
 ---
+
+Dies ist ein Platzhaltertext. Hier würde der eigentliche Inhalt des zweiten Blogbeitrags in deutscher Sprache stehen. Er beleuchtet die Möglichkeiten von Astro und wie Sie Ihre Inhalte effektiv strukturieren können.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
 

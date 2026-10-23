@@ -13,7 +13,7 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="de">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
@@ -90,12 +90,12 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
-				<ul>
+				<ul aria-label="Neueste Blogbeiträge">
 					{posts.map((post) => (
-						<li>
+						<li aria-label={`Beitrag: ${post.data.title}`}>
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
-									<Image width={720} height={360} src={post.data.heroImage} alt="" />
+									<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
 								)}
 								<h4 class="title">{post.data.title}</h4>
 								<p class="date">

@@ -90,47 +90,42 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     height: 66px;
     border-radius: 9999px;
 
-    /* GPU-Compositor Layer zwingend anfordern */
+    /* GPU-Compositing */
     transform: translateZ(0);
     will-change: backdrop-filter;
 
-    /* TAG-MODUS: Starkes Frostglas mit 36px Blur */
-    background: rgba(255, 255, 255, 0.68);
-    backdrop-filter: blur(36px) saturate(200%);
-    -webkit-backdrop-filter: blur(36px) saturate(200%);
+    /* Fein abgestimmtes, klares Glas ohne Grauschleier */
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
 
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 
-      0 14px 34px -4px rgba(0, 0, 0, 0.08),
-      0 4px 12px rgba(0, 0, 0, 0.03),
-      inset 0 1px 1.5px rgba(255, 255, 255, 0.95),
-      inset 0 -1px 1px rgba(0, 0, 0, 0.03);
+      0 10px 25px -5px rgba(0, 0, 0, 0.08),
+      0 4px 10px rgba(0, 0, 0, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.7);
 
     overflow: hidden;
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* NACHT-MODUS: Rauchglas mit 36px Blur und satter Zerstreuung */
+  /* Dunkel-Modus: Rauchglas mit geringer Deckkraft */
   :global(.theme-night) .header {
-    background: rgba(11, 15, 23, 0.62);
-    backdrop-filter: blur(36px) saturate(190%);
-    -webkit-backdrop-filter: blur(36px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 15, 23, 0.38);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 
-      0 16px 36px -6px rgba(0, 0, 0, 0.6),
-      0 4px 14px rgba(0, 0, 0, 0.3),
-      inset 0 1px 1.5px rgba(255, 255, 255, 0.22);
+      0 12px 30px -5px rgba(0, 0, 0, 0.45),
+      0 4px 12px rgba(0, 0, 0, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.2);
   }
 
-  /* SUNSET-MODUS: Tiefes, milchiges Violett mit 36px Blur */
+  /* Sunset-Modus: Dezente Tönung */
   :global(.theme-sunset) .header {
-    background: rgba(28, 16, 42, 0.64);
-    backdrop-filter: blur(36px) saturate(200%);
-    -webkit-backdrop-filter: blur(36px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(26, 16, 37, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 
-      0 16px 36px -6px rgba(0, 0, 0, 0.6),
-      inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+      0 12px 30px -5px rgba(0, 0, 0, 0.45),
+      inset 0 1px 1px rgba(255, 255, 255, 0.22);
   }
 
   .header-container {
@@ -154,7 +149,7 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     border-radius: 50%;
     border: 2px solid var(--accent);
     color: var(--accent);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.2);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.9rem;
     font-weight: 700;
@@ -183,9 +178,9 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     height: 36px;
     padding: 0 0.9rem;
     border-radius: 9999px;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    background: rgba(255, 255, 255, 0.4);
-    color: var(--text-main);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--text-muted);
     font-weight: 600;
     font-size: 0.9rem;
     text-decoration: none;
@@ -195,22 +190,21 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   :global(.theme-night) .nav-pill,
   :global(.theme-sunset) .nav-pill {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text-muted);
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
   }
 
   .nav-pill:hover {
     border-color: var(--accent);
     color: var(--text-main);
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.06);
     box-shadow: 0 0 12px var(--accent);
     transform: translateY(-1px);
   }
 
   :global(.theme-night) .nav-pill:hover,
   :global(.theme-sunset) .nav-pill:hover {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .nav-pill:active {
@@ -220,13 +214,13 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
   .nav-pill.active {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(0, 0, 0, 0.05);
     box-shadow: 0 0 12px var(--accent);
   }
 
   :global(.theme-night) .nav-pill.active,
   :global(.theme-sunset) .nav-pill.active {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .theme-switch-wrapper {
@@ -240,14 +234,14 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     gap: 0.2rem;
     padding: 3px;
     border-radius: 9999px;
-    background: rgba(0, 0, 0, 0.06);
+    background: rgba(0, 0, 0, 0.05);
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   :global(.theme-night) .theme-switch,
   :global(.theme-sunset) .theme-switch {
-    background: rgba(0, 0, 0, 0.35);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   .theme-btn {

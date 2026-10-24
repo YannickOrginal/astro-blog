@@ -124,48 +124,24 @@ const currentPath = pathname.replace(/\/$/, "");
     overflow: hidden;
     transform: translateZ(0);
     will-change: backdrop-filter;
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-      0 20px 50px -12px rgba(0, 0, 0, 0.8),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.3s ease;
-  }
-
-  @supports not (backdrop-filter: blur(12px)) {
-    .header {
-      background-color: rgba(255, 255, 255, 0.95);
-    }
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: none;
+    transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 
   :global(.theme-night) .header {
-    background-color: rgba(11, 15, 23, 0.45);
+    background-color: rgba(11, 15, 23, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 
-      0 20px 50px -12px rgba(0, 0, 0, 0.8),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-  }
-
-  @supports not (backdrop-filter: blur(12px)) {
-    :global(.theme-night) .header {
-      background-color: rgba(11, 15, 23, 0.95);
-    }
+    box-shadow: none;
   }
 
   :global(.theme-sunset) .header {
-    background-color: rgba(26, 16, 37, 0.55);
+    background-color: rgba(26, 16, 37, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 
-      0 20px 50px -12px rgba(0, 0, 0, 0.8),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
-  }
-
-  @supports not (backdrop-filter: blur(12px)) {
-    :global(.theme-sunset) .header {
-      background-color: rgba(26, 16, 37, 0.95);
-    }
+    box-shadow: none;
   }
 
   .nav-container {

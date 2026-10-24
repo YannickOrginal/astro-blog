@@ -116,7 +116,6 @@ const currentPath = pathname.replace(/\/$/, "");
     isolation: isolate;
   }
 
-  /* Exakter 1:1 .glass-card Shader */
   .header {
     pointer-events: auto;
     position: relative;
@@ -129,10 +128,14 @@ const currentPath = pathname.replace(/\/$/, "");
     transform: translateZ(0);
     will-change: backdrop-filter;
 
-    background: rgba(255, 255, 255, 0.05);
+    /* 40px Blur-Shader */
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
 
+    /* Exakt 10% Background-Deckkraft */
+    background: rgba(255, 255, 255, 0.10);
+
+    /* Lichtkanten & Box-Shadows aus der .glass-card */
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 
       0 8px 32px rgba(0, 0, 0, 0.1),
@@ -143,7 +146,6 @@ const currentPath = pathname.replace(/\/$/, "");
     transition: all 0.3s ease;
   }
 
-  /* Exakte .glass-card Lichtkante Oben */
   .header::before {
     content: '';
     position: absolute;
@@ -161,7 +163,6 @@ const currentPath = pathname.replace(/\/$/, "");
     z-index: 3;
   }
 
-  /* Exakte .glass-card Lichtkante Links */
   .header::after {
     content: '';
     position: absolute;
@@ -237,7 +238,6 @@ const currentPath = pathname.replace(/\/$/, "");
   .nav-links a:hover { color: var(--text-main); }
   .nav-links a.active { color: var(--accent); }
 
-  /* 3-Position Slider */
   .theme-switch-wrapper {
     display: flex;
     align-items: center;
@@ -287,7 +287,6 @@ const currentPath = pathname.replace(/\/$/, "");
     transform: scale(1.15);
   }
 
-  /* Scroll Track & Bubbles */
   .scroll-track {
     position: absolute;
     bottom: 0;

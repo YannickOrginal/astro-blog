@@ -94,38 +94,42 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     transform: translateZ(0);
     will-change: backdrop-filter;
 
-    /* Fein abgestimmtes, klares Glas ohne Grauschleier */
-    background: rgba(255, 255, 255, 0.55);
-    backdrop-filter: blur(16px) saturate(160%);
-    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    /* TAG-MODUS: 85% Deckkraft, wenig Pixelation/Blur (10px) fuer klare Kanten */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
 
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 
-      0 10px 25px -5px rgba(0, 0, 0, 0.08),
-      0 4px 10px rgba(0, 0, 0, 0.04),
-      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      0 12px 30px -4px rgba(0, 0, 0, 0.08),
+      0 4px 12px rgba(0, 0, 0, 0.04),
+      inset 0 1px 1px rgba(255, 255, 255, 0.95);
 
     overflow: hidden;
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* Dunkel-Modus: Rauchglas mit geringer Deckkraft */
+  /* NACHT-MODUS: Ebenfalls ca. 85% solide Deckkraft */
   :global(.theme-night) .header {
-    background: rgba(11, 15, 23, 0.38);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 
-      0 12px 30px -5px rgba(0, 0, 0, 0.45),
-      0 4px 12px rgba(0, 0, 0, 0.2),
-      inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Sunset-Modus: Dezente Tönung */
-  :global(.theme-sunset) .header {
-    background: rgba(26, 16, 37, 0.42);
+    background: rgba(11, 15, 23, 0.85);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     box-shadow: 
-      0 12px 30px -5px rgba(0, 0, 0, 0.45),
-      inset 0 1px 1px rgba(255, 255, 255, 0.22);
+      0 12px 30px -5px rgba(0, 0, 0, 0.55),
+      0 4px 12px rgba(0, 0, 0, 0.25),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  /* SUNSET-MODUS: Ebenfalls ca. 85% solide Deckkraft */
+  :global(.theme-sunset) .header {
+    background: rgba(26, 16, 37, 0.85);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      0 12px 30px -5px rgba(0, 0, 0, 0.55),
+      inset 0 1px 1px rgba(255, 255, 255, 0.18);
   }
 
   .header-container {
@@ -149,12 +153,17 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     border-radius: 50%;
     border: 2px solid var(--accent);
     color: var(--accent);
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.04);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: -0.5px;
     transition: all 0.2s ease;
+  }
+
+  :global(.theme-night) .logo-circle,
+  :global(.theme-sunset) .logo-circle {
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .logo-link:hover .logo-circle {
@@ -178,9 +187,9 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     height: 36px;
     padding: 0 0.9rem;
     border-radius: 9999px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     background: rgba(0, 0, 0, 0.03);
-    color: var(--text-muted);
+    color: var(--text-main);
     font-weight: 600;
     font-size: 0.9rem;
     text-decoration: none;
@@ -190,21 +199,22 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   :global(.theme-night) .nav-pill,
   :global(.theme-sunset) .nav-pill {
-    border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
   }
 
   .nav-pill:hover {
     border-color: var(--accent);
     color: var(--text-main);
     background: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 0 12px var(--accent);
+    box-shadow: 0 0 10px var(--accent);
     transform: translateY(-1px);
   }
 
   :global(.theme-night) .nav-pill:hover,
   :global(.theme-sunset) .nav-pill:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
   }
 
   .nav-pill:active {
@@ -214,13 +224,13 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
   .nav-pill.active {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: 0 0 12px var(--accent);
+    background: rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0 10px var(--accent);
   }
 
   :global(.theme-night) .nav-pill.active,
   :global(.theme-sunset) .nav-pill.active {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .theme-switch-wrapper {
@@ -240,8 +250,8 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 
   :global(.theme-night) .theme-switch,
   :global(.theme-sunset) .theme-switch {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.35);
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .theme-btn {

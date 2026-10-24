@@ -5,113 +5,161 @@ const currentPath = pathname.replace(/\/$/, "");
 
 <div class="header-floating-wrapper">
   <header class="header">
+    <div class="header-backdrop"></div>
+
     <div class="nav-container">
       <a href="/" class="logo-link" aria-label="Startseite">
         <span class="circle-logo">YD</span>
       </a>
-      
-      <nav class="nav-links">
+
+      <nav class="nav-links" aria-label="Hauptnavigation">
         <a href="/" class={currentPath === "" ? "active" : ""}>Home</a>
         <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}>Blog</a>
         <a href="/about" class={currentPath === "/about" ? "active" : ""}>About</a>
       </nav>
 
       <div class="theme-switch-wrapper">
-        <div class="theme-switch" role="group" aria-label="Farbpaletten Schalter">
-          <div class="theme-slider" id="theme-slider"></div>
-          <button type="button" class="theme-btn" data-theme="day" title="Tag-Modus">☀️</button>
-          <button type="button" class="theme-btn" data-theme="night" title="Nacht-Modus">🌙</button>
-          <button type="button" class="theme-btn" data-theme="sunset" title="Sonnenuntergang">🌇</button>
+        <div class="theme-switch" role="group" aria-label="Farbpalette wählen">
+          <div class="theme-slider" id="theme-slider" aria-hidden="true"></div>
+          <button type="button" class="theme-btn" data-theme="day" aria-label="Tag-Modus" title="Tag">☀️</button>
+          <button type="button" class="theme-btn" data-theme="night" aria-label="Nacht-Modus" title="Nacht">🌙</button>
+          <button type="button" class="theme-btn" data-theme="sunset" aria-label="Sonnenuntergang" title="Sunset">🌇</button>
         </div>
       </div>
     </div>
 
+    <!-- Scroll Progress Indikator -->
     <div class="scroll-track" id="scroll-track">
       <div class="scroll-fill" id="scroll-fill"></div>
       <div class="scroll-cursor-bubble" id="scroll-cursor-bubble"></div>
-      <div class="milestone-bubble" style="left: 25%;" data-point="25"></div>
-      <div class="milestone-bubble" style="left: 50%;" data-point="50"></div>
-      <div class="milestone-bubble" style="left: 75%;" data-point="75"></div>
-      <div class="milestone-bubble" style="left: 100%;" data-point="100"></div>
+      <span class="milestone-bubble" style="left: 25%;" data-point="25"></span>
+      <span class="milestone-bubble" style="left: 50%;" data-point="50"></span>
+      <span class="milestone-bubble" style="left: 75%;" data-point="75"></span>
+      <span class="milestone-bubble" style="left: 100%;" data-point="100"></span>
     </div>
   </header>
 </div>
 
 <script is:inline>
-  const root = document.documentElement;
-  const buttons = document.querySelectorAll('.theme-btn');
-  const slider = document.getElementById('theme-slider');
-  const themes = ['day', 'night', 'sunset'];
+  (() => {
+    const root = document.documentElement;
+    const themes = ['day', 'night', 'sunset'];
 
-  function applyTheme(theme) {
-    root.classList.remove('theme-night', 'theme-sunset');
-    if (theme === 'night') root.classList.add('theme-night');
-    if (theme === 'sunset') root.classList.add('theme-sunset');
-    
-    const idx = themes.indexOf(theme);
-    if (slider && idx !== -1) {
-      slider.style.transform = `translateX(${idx * 100}%)`;
-    }
-    localStorage.setItem('yd_theme', theme);
-  }
+    function initTheme() {
+      const slider = document.getElementById('theme-slider');
+      const buttons = document.querySelectorAll('.theme-btn');
 
-  const storedTheme = localStorage.getItem('yd_theme') || 'night';
-  applyTheme(storedTheme);
+      function applyTheme(theme) {
+        root.classList.remove('theme-night', 'theme-sunset');
+        if (theme === 'night') root.classList.add('theme-night');
+        if (theme === 'sunset') root.classList.add('theme-sunset');
 
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const selected = btn.getAttribute('data-theme');
-      applyTheme(selected);
-    });
-  });
-
-  const scrollFill = document.getElementById('scroll-fill');
-  const cursorBubble = document.getElementById('scroll-cursor-bubble');
-  const track = document.getElementById('scroll-track');
-  const milestoneBubbles = document.querySelectorAll('.milestone-bubble');
-
-  function updateScrollProgress() {
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (docHeight <= 0) {
-      if (track) track.style.opacity = '0';
-      return;
-    }
-    if (track) track.style.opacity = '1';
-
-    const scrolled = (window.scrollY / docHeight) * 100;
-    const clamped = Math.min(Math.max(scrolled, 0), 100);
-
-    if (scrollFill) scrollFill.style.width = `${clamped}%`;
-    if (cursorBubble) cursorBubble.style.left = `${clamped}%`;
-
-    milestoneBubbles.forEach((mb) => {
-      const pt = parseFloat(mb.getAttribute('data-point') || '0');
-      if (clamped >= pt) {
-        mb.classList.add('reached');
-      } else {
-        mb.classList.remove('reached');
+        const activeIndex = themes.indexOf(theme);
+        if (slider && activeIndex !== -1) {
+          // Exakte Verschiebung basierend auf der Breite des Buttons (100% seiner eigenen Breite)
+          slider.style.transform = `translateX(${activeIndex * 100}%)`;
+        }
+        localStorage.setItem('yd_theme', theme);
       }
-    });
-  }
 
-  window.addEventListener('scroll', updateScrollProgress, { passive: true });
-  window.addEventListener('resize', updateScrollProgress);
-  document.addEventListener('DOMContentLoaded', updateScrollProgress);
+      buttons.forEach((btn) => {
+        btn.onclick = () => {
+          const selected = btn.getAttribute('data-theme');
+          if (selected) applyTheme(selected);
+        };
+      });
+
+      const current = localStorage.getItem('yd_theme') || 'night';
+      applyTheme(current);
+    }
+
+    function initScrollProgress() {
+      const track = document.getElementById('scroll-track');
+      const fill = document.getElementById('scroll-fill');
+      const cursor = document.getElementById('scroll-cursor-bubble');
+      const milestones = document.querySelectorAll('.milestone-bubble');
+
+      if (!track || !fill) return;
+
+      let ticking = false;
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (scrollableHeight <= 0) {
+              track.style.opacity = '0';
+              ticking = false;
+              return;
+            }
+
+            track.style.opacity = '1';
+            const progress = Math.min(Math.max((window.scrollY / scrollableHeight) * 100, 0), 100);
+
+            fill.style.width = `${progress}%`;
+            if (cursor) cursor.style.left = `${progress}%`;
+
+            milestones.forEach((m) => {
+              const pt = parseFloat(m.getAttribute('data-point') || '0');
+              m.classList.toggle('reached', progress >= pt);
+            });
+
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.removeEventListener('scroll', onScroll);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      onScroll();
+    }
+
+    // Unterstützt normale Seiten & Astro View Transitions
+    function setup() {
+      initTheme();
+      initScrollProgress();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup);
+    } else {
+      setup();
+    }
+    document.addEventListener('astro:page-load', setup);
+  })();
 </script>
 
 <style>
+  :root {
+    --header-bg: rgba(255, 255, 255, 0.7);
+    --header-border: rgba(0, 0, 0, 0.08);
+    --header-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+  }
+
+  :global(.theme-night) {
+    --header-bg: rgba(11, 15, 23, 0.65);
+    --header-border: rgba(255, 255, 255, 0.12);
+    --header-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  }
+
+  :global(.theme-sunset) {
+    --header-bg: rgba(30, 18, 38, 0.7);
+    --header-border: rgba(255, 255, 255, 0.15);
+    --header-shadow: 0 20px 40px -15px rgba(15, 5, 20, 0.7);
+  }
+
   .header-floating-wrapper {
     position: fixed;
     top: 1rem;
     left: 0;
     right: 0;
     z-index: 100;
-    width: 100%;
     display: flex;
     justify-content: center;
-    padding: 0 16px;
+    padding: 0 1rem;
     pointer-events: none;
-    isolation: isolate;
   }
 
   .header {
@@ -119,93 +167,85 @@ const currentPath = pathname.replace(/\/$/, "");
     position: relative;
     width: 100%;
     max-width: 860px;
-    height: 64px;
+    height: 60px;
     border-radius: 9999px;
-    overflow: hidden;
-    transform: translateZ(0);
-    will-change: backdrop-filter;
-    background-color: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    box-shadow: none;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
+    border: 1px solid var(--header-border);
+    box-shadow: var(--header-shadow);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  :global(.theme-night) .header {
-    background-color: rgba(11, 15, 23, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: none;
-  }
-
-  :global(.theme-sunset) .header {
-    background-color: rgba(26, 16, 37, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    box-shadow: none;
+  /* Eigene Ebene für Backdrop-Filter löst Rendering-Artefakte */
+  .header-backdrop {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--header-bg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 0;
+    pointer-events: none;
   }
 
   .nav-container {
-    height: 100%;
-    padding: 0 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
     position: relative;
     z-index: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.25rem;
   }
 
+  /* Logo */
   .logo-link {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--text-main);
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    letter-spacing: -0.5px;
   }
 
   .circle-logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 2px solid var(--accent, #38bdf8);
-    background: rgba(56, 189, 248, 0.08);
+    border: 1.5px solid var(--accent, #38bdf8);
+    background: rgba(56, 189, 248, 0.1);
     color: var(--accent, #38bdf8);
     font-family: ui-monospace, monospace;
+    font-size: 0.95rem;
     font-weight: 700;
-    transition: all 0.25s ease;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
   }
 
   .logo-link:hover .circle-logo {
     background: var(--accent, #38bdf8);
-    color: var(--bg-main, #0f172a);
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    color: #fff;
     transform: scale(1.05);
   }
 
+  /* Links */
   .nav-links {
     display: flex;
-    gap: 1.25rem;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .nav-links a {
-    color: var(--text-muted);
+    color: var(--text-muted, #94a3b8);
     text-decoration: none;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 500;
     transition: color 0.2s ease;
   }
 
-  .nav-links a:hover { color: var(--text-main); }
-  .nav-links a.active { color: var(--accent); }
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--accent, #38bdf8);
+  }
 
+  /* Theme Switcher */
   .theme-switch-wrapper {
     display: flex;
     align-items: center;
@@ -214,12 +254,12 @@ const currentPath = pathname.replace(/\/$/, "");
   .theme-switch {
     position: relative;
     display: flex;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
+    background: rgba(125, 125, 125, 0.15);
+    border: 1px solid var(--header-border);
+    border-radius: 9999px;
     padding: 2px;
     width: 96px;
-    height: 32px;
+    height: 30px;
     box-sizing: border-box;
   }
 
@@ -227,19 +267,17 @@ const currentPath = pathname.replace(/\/$/, "");
     position: absolute;
     top: 2px;
     left: 2px;
-    width: 30px;
-    height: 26px;
-    background: var(--accent);
-    opacity: 0.25;
-    border-radius: 16px;
-    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    width: calc((100% - 4px) / 3);
+    height: calc(100% - 4px);
+    background: var(--accent, #38bdf8);
+    border-radius: 9999px;
+    opacity: 0.35;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
   }
 
   .theme-btn {
     flex: 1;
-    position: relative;
-    z-index: 2;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -248,6 +286,8 @@ const currentPath = pathname.replace(/\/$/, "");
     align-items: center;
     justify-content: center;
     padding: 0;
+    z-index: 1;
+    user-select: none;
     transition: transform 0.15s ease;
   }
 
@@ -255,38 +295,42 @@ const currentPath = pathname.replace(/\/$/, "");
     transform: scale(1.15);
   }
 
+  /* Scroll Progress Track */
   .scroll-track {
     position: absolute;
-    bottom: 0;
-    left: 24px;
-    right: 24px;
+    bottom: -1px;
+    left: 28px;
+    right: 28px;
     height: 3px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(125, 125, 125, 0.2);
     border-radius: 9999px;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.3s ease;
+    z-index: 2;
   }
 
   .scroll-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 0%;
+    background: var(--accent, #38bdf8);
     border-radius: 9999px;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-    transition: width 0.05s linear;
+    box-shadow: 0 0 6px var(--accent, #38bdf8);
   }
 
   .scroll-cursor-bubble {
     position: absolute;
     top: 50%;
+    left: 0%;
     transform: translate(-50%, -50%);
-    width: 9px;
-    height: 9px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--text-main);
-    box-shadow: 0 0 6px var(--accent);
+    background: #fff;
+    box-shadow: 0 0 4px var(--accent, #38bdf8);
     pointer-events: none;
-    transition: left 0.05s linear;
   }
 
   .milestone-bubble {
@@ -296,33 +340,33 @@ const currentPath = pathname.replace(/\/$/, "");
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: var(--border);
-    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(125, 125, 125, 0.5);
+    transition: background 0.2s ease, transform 0.2s ease;
   }
 
   .milestone-bubble.reached {
-    background: var(--accent);
-    transform: translate(-50%, -50%) scale(1.4);
-    box-shadow: 0 0 6px var(--accent);
+    background: var(--accent, #38bdf8);
+    transform: translate(-50%, -50%) scale(1.2);
+    box-shadow: 0 0 4px var(--accent, #38bdf8);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 640px) {
     .header-floating-wrapper {
       top: 0.5rem;
-      padding: 0 10px;
+      padding: 0 0.5rem;
     }
     .header {
-      height: 58px;
+      height: 54px;
     }
     .nav-container {
-      padding: 0.6rem 1rem;
+      padding: 0 0.85rem;
     }
     .nav-links {
-      gap: 0.75rem;
+      gap: 1rem;
     }
     .circle-logo {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
     }
   }
 </style>

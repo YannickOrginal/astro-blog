@@ -129,22 +129,23 @@ const currentPath = pathname.replace(/\/$/, "");
     -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.35);
     box-shadow: none;
-    filter: none;
     transition: background-color 0.25s ease, border-color 0.25s ease;
   }
 
   :global(.theme-night) .header {
     background-color: rgba(11, 15, 23, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     box-shadow: none;
-    filter: none;
   }
 
   :global(.theme-sunset) .header {
     background-color: rgba(26, 16, 37, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     box-shadow: none;
-    filter: none;
   }
 
   .nav-container {

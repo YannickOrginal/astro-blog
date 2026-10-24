@@ -1,20 +1,109 @@
----
-import { type CollectionEntry, getCollection, render } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+﻿---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Header from '../../components/Header.astro';
+import '../../styles/global.css';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	return posts.map((post) => ({
-		params: { slug: post.id },
-		props: post,
-	}));
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
 }
+
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data}>
-	<Content />
-</BlogPost>
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{post.data.title}</title>
+  </head>
+  <body>
+    <Header />
+    <main class="post-container">
+      <article class="prose">
+        <header class="post-header">
+          <time datetime={post.data.pubDate ? new Date(post.data.pubDate).toISOString() : ''}>
+            {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString('de-DE') : ''}
+          </time>
+          <h1>{post.data.title}</h1>
+          {post.data.description && <p class="description">{post.data.description}</p>}
+        </header>
+        <hr class="divider" />
+        <div class="content">
+          <Content />
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
+
+<style>
+  .post-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 24px 80px 24px;
+  }
+  .post-header time {
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .post-header h1 {
+    font-size: 2.25rem;
+    margin: 12px 0;
+    line-height: 1.25;
+    color: var(--text-main);
+  }
+  .description {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin: 0;
+  }
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0 32px 0;
+  }
+  .content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.3rem;
+  }
+  .content :global(h3) {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    color: var(--text-main);
+  }
+  .content :global(p) {
+    margin: 1rem 0;
+    color: var(--text-main);
+    opacity: 0.9;
+  }
+  .content :global(pre) {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  .content :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9em;
+  }
+  .content :global(a) {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .content :global(a:hover) {
+    text-decoration: underline;
+  }
+</style>

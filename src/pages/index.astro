@@ -1,87 +1,169 @@
----
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+﻿---
+import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import '../styles/global.css';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf())
+  .slice(0, 5);
 ---
 
 <!doctype html>
 <html lang="de">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body class="min-h-screen flex flex-col">
-		<Header />
-		<main class="flex-grow container mx-auto px-4 py-12">
-			
-			<!-- Hero Section -->
-			<section class="text-center mb-16">
-				<h1 class="text-5xl font-extrabold mb-4 text-gray-900">Dein Blog. Dein Stil. Starte jetzt!</h1>
-				<p class="text-xl text-gray-600 max-w-3xl mx-auto">
-					Willkommen beim Astro Blog Starter Template. Dies ist ein leichtgewichtiges, minimalistisch gestaltetes Fundament für jeden, der einen persönlichen Blog, eine Website oder ein Portfolio mit Astro erstellen möchte.
-				</p>
-			</section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yannick | Engineering & Systems</title>
+  </head>
+  <body>
+    <Header />
+    <main class="container">
+      <section class="hero">
+        <span class="badge">&lt;dev /&gt;</span>
+        <h1>Engineering &amp; Systems</h1>
+        <p class="subtitle">
+          Praxisnahe Notizen, Deep Dives und Analysen zu Elektrotechnik, System-Architektur, Linux und Performance.
+        </p>
+      </section>
 
-			<!-- Latest Posts Overview -->
-			<section class="mb-16">
-				<h2 class="text-3xl font-bold mb-8 border-b pb-2">Neueste Beiträge</h2>
-				<div class="grid md:grid-cols-3 gap-8">
-					<!-- Placeholder für Blogbeiträge. Hier müsste die Logik zur Abfrage der Inhalte implementiert werden. -->
-					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-						<h3 class="text-xl font-semibold mb-2">Titel des ersten Beitrags</h3>
-						<p class="text-sm text-gray-500 mb-3">Datum: 15. Mai 2024</p>
-						<p class="text-gray-700 line-clamp-3">
-							Hier kommt eine kurze Zusammenfassung des ersten Blogbeitrags. Er behandelt ein spannendes Thema und zeigt, wie einfach es ist, mit Astro zu arbeiten.
-						</p>
-						<a href="/blog/first-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
-					</article>
-					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-						<h3 class="text-xl font-semibold mb-2">Titel des zweiten Beitrags</h3>
-						<p class="text-sm text-gray-500 mb-3">Datum: 10. Mai 2024</p>
-						<p class="text-gray-700 line-clamp-3">
-							Die zweite Zusammenfassung beleuchtet die Möglichkeiten von Astro und wie Sie Ihre Inhalte effektiv strukturieren können.
-						</p>
-						<a href="/blog/second-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
-					</article>
-					<article class="border p-6 rounded-lg shadow-md hover:shadow-xl transition duration-300">
-						<h3 class="text-xl font-semibold mb-2">Titel des dritten Beitrags</h3>
-						<p class="text-sm text-gray-500 mb-3">Datum: 01. Mai 2024</p>
-						<p class="text-gray-700 line-clamp-3">
-							Ein Blick auf die neuesten Entwicklungen im Web-Bereich. Dieser Beitrag zeigt, wie modern und performant Ihr Blog sein kann.
-						</p>
-						<a href="/blog/third-post/" class="mt-4 inline-block text-blue-600 hover:text-blue-800 font-medium">Weiterlesen &rarr;</a>
-					</article>
-				</div>
-			</section>
+      <section class="feed">
+        <div class="section-header">
+          <h2>Neueste Beiträge</h2>
+          <a href="/blog" class="all-link">Alle ansehen &rarr;</a>
+        </div>
 
-			<!-- Getting Started Section -->
-			<section class="mt-12 text-center">
-				<h2 class="text-3xl font-bold mb-6">So startest du mit dem Template</h2>
-				<p class="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-					Dieses Template ist ein minimalistischer Ausgangspunkt. Du kannst es mit Astro Integrations erweitern, um Tools wie Tailwind, React oder Vue hinzuzufügen.
-				</p>
-				<ul class="list-disc list-inside text-left mx-auto max-w-xl space-y-3">
-					<li>
-						Bearbeite diese Seite in <code class="bg-gray-100 p-1 rounded">src/pages/index.astro</code>
-					</li>
-					<li>
-						Passe den Site-Header in <code class="bg-gray-100 p-1 rounded">src/components/Header.astro</code> an
-					</li>
-					<li>
-						Füge deinen Namen im Footer hinzu in <code class="bg-gray-100 p-1 rounded">src/components/Footer.astro</code>
-					</li>
-					<li>
-						Entdecke die Blogbeiträge in <code class="bg-gray-100 p-1 rounded">src/content/blog/</code>
-					</li>
-					<li>
-						Gestalte das Layout des Blogbeitrags in <code class="bg-gray-100 p-1 rounded">src/layouts/BlogPost.astro</code>
-					</li>
-				</ul>
-				<p class="mt-8 text-gray-500">
-					Viel Spaß beim Bauen! Bei Fragen kannst du die Dokumentation lesen oder uns auf Discord beitreten.
-				</p>
-			</section>
-		</main>
-		<Footer />
-	</body>
+        <div class="posts-list">
+          {posts.map((post) => (
+            <a href={`/blog/${post.id}/`} class="post-row">
+              <div class="row-meta">
+                <time datetime={post.data.pubDate ? new Date(post.data.pubDate).toISOString() : ''}>
+                  {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString('de-DE') : ''}
+                </time>
+              </div>
+              <div class="row-body">
+                <h3>{post.data.title}</h3>
+                {post.data.description && <p>{post.data.description}</p>}
+              </div>
+              <span class="arrow">&rarr;</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+  </body>
 </html>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 24px 80px 24px;
+  }
+  .hero {
+    margin-bottom: 3.5rem;
+  }
+  .badge {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    background: rgba(88, 166, 255, 0.1);
+    border: 1px solid var(--border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 0 0 1rem 0;
+    color: var(--text-main);
+  }
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 {
+    font-size: 1.35rem;
+    color: var(--text-main);
+    margin: 0;
+  }
+  .all-link {
+    font-size: 0.9rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .all-link:hover {
+    text-decoration: underline;
+  }
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .post-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .post-row:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+  .row-meta time {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .row-body {
+    flex-grow: 1;
+  }
+  .row-body h3 {
+    margin: 0 0 0.35rem 0;
+    font-size: 1.15rem;
+    color: var(--text-main);
+  }
+  .row-body p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .arrow {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+  .post-row:hover .arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+  @media (max-width: 640px) {
+    .post-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .arrow {
+      display: none;
+    }
+  }
+</style>

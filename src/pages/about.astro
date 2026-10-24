@@ -1,27 +1,120 @@
+﻿---
+import Header from '../components/Header.astro';
+import '../styles/global.css';
 ---
-import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
-import Layout from '../layouts/BlogPost.astro';
----
 
-<Layout
-	title="Über mich"
-	description="Einblicke in meine Arbeit, meine Leidenschaften und meine Reise als Entwickler."
-	pubDate={new Date('August 08 2021')}
-	heroImage={AboutHeroImage}
->
-	<p>
-		Herzlich willkommen auf meiner Seite! Ich bin ein leidenschaftlicher Softwareentwickler mit einem tiefen Interesse an modernen Webtechnologien und minimalistischem Design. Meine Reise in die Welt der digitalen Kreation begann mit einer Faszination für Code und die Möglichkeit, Ideen in funktionierende, ästhetisch ansprechende Produkte zu verwandeln.
-	</p>
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | Yannick Derouaux</title>
+  </head>
+  <body>
+    <Header />
+    <main class="container">
+      <section class="profile-header">
+        <h1>Yannick Derouaux</h1>
+        <p class="tagline">Staatlich geprüfter Elektrotechniker &amp; Systems Builder</p>
+      </section>
 
-	<p>
-		Meine Expertise liegt in der Entwicklung performanter und skalierbarer Anwendungen. Ich arbeite gerne mit modernen Frameworks wie Astro, React und Vue, um Lösungen zu schaffen, die nicht nur funktional, sondern auch benutzerfreundlich sind. Ob es um komplexe Backend-Architekturen oder um die Gestaltung intuitiver Frontend-Erlebnisse geht – ich liebe die Herausforderung.
-	</p>
+      <div class="bento-grid">
+        <div class="card card-wide">
+          <h3>Fokus &amp; Handwerk</h3>
+          <p>
+            Spezialisiert auf elektrische Dokumentation, Systemsteuerungen, Netzwerk-Infrastruktur 
+            und Automatisierung. Erfahrung in Industrieanlagen, CAD/ECAD-Workflows sowie praktischer 
+            Schaltungs- und Fehleranalyse.
+          </p>
+        </div>
 
-	<p>
-		Außerhalb der Programmierung finde ich meine Balance in der Natur und in kreativen Projekten. Ich glaube fest daran, dass Technologie und Kreativität Hand in Hand gehen sollten. Dieser Blog dient als Plattform, um meine Gedanken, meine Projekte und meine Erfahrungen mit der Entwicklung zu teilen.
-	</p>
+        <div class="card">
+          <h3>Tech Stack</h3>
+          <ul class="tech-list">
+            <li>TypeScript / Astro</li>
+            <li>Linux / Debian / RouterOS</li>
+            <li>VLANs / Unbound / Zero Trust</li>
+            <li>E-CAD / Meridian</li>
+          </ul>
+        </div>
 
-	<p>
-		Ich bin immer offen für neue Herausforderungen und spannende Kollaborationen. Wenn Sie an einem Projekt arbeiten, das unsere Leidenschaft für Qualität und Innovation teilt, lassen Sie uns in Kontakt treten!
-	</p>
-</Layout>
+        <div class="card">
+          <h3>Interessen</h3>
+          <p>
+            High-Performance Hardware, Custom Setups, Performance-Tuning und 
+            lokale LLM-Workflows via Ollama &amp; Aider.
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 24px 80px 24px;
+  }
+  .profile-header {
+    margin-bottom: 2.5rem;
+  }
+  .profile-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-main);
+  }
+  .tagline {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    color: var(--accent);
+    font-size: 1.05rem;
+    margin: 0;
+  }
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.15s ease;
+  }
+  .card:hover {
+    border-color: var(--border-hover);
+  }
+  .card-wide {
+    grid-column: span 2;
+  }
+  .card h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--text-main);
+    font-size: 1.2rem;
+  }
+  .card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .tech-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--text-muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9rem;
+  }
+  .tech-list li {
+    margin-bottom: 0.35rem;
+  }
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .card-wide {
+      grid-column: span 1;
+    }
+  }
+</style>

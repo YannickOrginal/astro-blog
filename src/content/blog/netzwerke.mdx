@@ -1,0 +1,29 @@
+---
+title: "High-Performance Heimnetzwerke mit Multi-VLAN & Pi-hole DNS"
+description: "Technische Anleitung zur Implementierung eines robusten, isolierten Heimnetzes mit Multi-VLAN und intelligentem DNS (Pi-hole)."
+pubDate: 2026-10-24
+---
+
+# High-Performance Heimnetzwerke mit Multi-VLAN & Pi-hole DNS
+
+## 🧱 Die Notwendigkeit der Netzwerk-Segmentierung
+Ein modernes Heimnetzwerk ist kein monolithischer Datenstrom, sondern eine Ansammlung von Subsystemen mit unterschiedlichen Sicherheits-, Leistungs- und Nutzungsanforderungen. Das Konzept des Multi-VLAN ist die technische Antwort auf diese Notwendigkeit. Anstatt alle Geräte (IoT, PC, Server, Gäste) in einem einzigen Broadcast-Domain zu halten, segregiert Multi-VLAN den Datenverkehr logisch mithilfe von Switches und Routern.
+
+### 🔒 Architektur und Sicherheit
+Die Segmentierung erlaubt es, kritische Bereiche (z.B. Produktionsnetzwerke/Smart Home) physisch von nicht-kritischen Bereichen (Gästenetzwerk) zu trennen.
+
+**Das VLAN-Design:**
+*   **VLAN 10 (Management):** Für Router, Switches und Verwaltungsserver. Der Kern der Infrastruktur.
+*   **VLAN 20 (Workstation):** Für PCs und professionelle Arbeitsstationen (Hohe Bandbreite/Sicherheit).
+*   **VLAN 30 (IoT/Smart Home):** Für energiearme Sensoren und Geräte, die weniger Sicherheit benötigen, aber isoliert laufen.
+*   **VLAN 99 (Guest):** Für temporäre Nutzer, komplett vom Rest des Netzwerks abgetrennt.
+
+### 🔎 DNS & Intelligente Steuerungsebene (Pi-hole)
+Hier kommt Pi-hole ins Spiel. Als zentraler DNS-Filter agiert er als intelligenter Layer 7 Proxy, der auf der Netzwerkschicht sitzt.
+Ein Pi-hole, der in seinem eigenen, isolierten VLAN (z.B. VLAN 10) läuft, kann globalen Traffic filtern, Werbung blockieren und gleichzeitig als zentraler, verwaltbarer DNS-Resolver für alle anderen VLANs dienen. Dies maximiert nicht nur die Performance durch Reduktion unnötiger externer Anfragen, sondern bietet auch einen kritischen Angriffspunkt für Traffic-Analyse.
+
+**Konzept: DNS-Routing-Logik**
+Jedes VLAN wird durch einen dedizierten Router-Port geleitet, welcher auf den Pi-hole verweist, aber gleichzeitig die Routing-Logik für das eigene Subnetz verwaltet.
+
+## 🚀 Fazit
+Ein High-Performance-Heimnetzwerk ist ein kontrolliertes, segmentiertes System. Die Anwendung von VLANs und intelligenten Gateways wie Pi-hole ist der Schlüssel, um **Stabilität, Leistung und Sicherheit deterministisch** zu steuern – eine direkte Übertragung ingenieurtechnischer Prinzipien auf die digitale Domäne.

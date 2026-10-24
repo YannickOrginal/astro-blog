@@ -1,0 +1,64 @@
+﻿---
+interface Props {
+  title: string;
+  date: string | Date;
+  excerpt: string;
+  slug: string;
+}
+
+const { title, date, excerpt, slug } = Astro.props;
+const formattedDate = date instanceof Date ? date.toLocaleDateString('de-DE') : new Date(date).toLocaleDateString('de-DE');
+---
+
+<article class="card">
+  <div class="card-meta">
+    <time>{formattedDate}</time>
+  </div>
+  <h3>{title}</h3>
+  <p>{excerpt}</p>
+  <a href={`/blog/${slug}/`} class="card-link">Artikel lesen &rarr;</a>
+</article>
+
+<style>
+  .card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover {
+    border-color: #58a6ff;
+    transform: translateY(-2px);
+  }
+  .card-meta time {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85rem;
+    color: #58a6ff;
+  }
+  .card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #e6edf3;
+  }
+  .card p {
+    margin: 0;
+    color: #8b949e;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  .card-link {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+  }
+  .card-link:hover {
+    text-decoration: underline;
+  }
+</style>

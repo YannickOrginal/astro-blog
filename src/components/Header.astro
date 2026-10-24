@@ -116,85 +116,59 @@ const currentPath = pathname.replace(/\/$/, "");
     isolation: isolate;
   }
 
-  /* Exakt verifizierte Werte aus deinem erfolgreichen Konsolen-Test */
   .header {
     pointer-events: auto;
     position: relative;
     width: 100%;
     max-width: 860px;
-    height: 66px;
+    height: 64px;
     border-radius: 9999px;
     overflow: hidden;
 
     transform: translateZ(0);
     will-change: backdrop-filter;
 
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    /* 1. Erst der Background */
+    background: rgba(255, 255, 255, 0.2);
+
+    /* 2. Direkt danach der Backdrop-Filter (Standard + Fallback) */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.5),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 0 12px 6px rgba(255, 255, 255, 0.4);
+      0 10px 30px -4px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
-    transition: all 0.3s ease;
-  }
-
-  .header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.8),
-      transparent
-    );
-    pointer-events: none;
-    z-index: 3;
-  }
-
-  .header::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.8),
-      transparent,
-      rgba(255, 255, 255, 0.3)
-    );
-    pointer-events: none;
-    z-index: 3;
+    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   :global(.theme-night) .header {
-    background-color: rgba(11, 15, 23, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* 1. Erst der Background */
+    background: rgba(11, 15, 23, 0.7);
+
+    /* 2. Direkt danach der Filter */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 
-      0 12px 36px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-      inset 0 0 14px 4px rgba(255, 255, 255, 0.12);
+      0 12px 32px -4px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
   :global(.theme-sunset) .header {
-    background-color: rgba(26, 16, 37, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    /* 1. Erst der Background */
+    background: rgba(26, 16, 37, 0.75);
+
+    /* 2. Direkt danach der Filter */
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
-      0 12px 36px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 0 14px 4px rgba(244, 63, 94, 0.15);
+      0 12px 32px -4px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
   .nav-container {
@@ -204,8 +178,6 @@ const currentPath = pathname.replace(/\/$/, "");
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    position: relative;
-    z-index: 2;
   }
 
   .logo-link {
@@ -307,14 +279,13 @@ const currentPath = pathname.replace(/\/$/, "");
   .scroll-track {
     position: absolute;
     bottom: 0;
-    left: 28px;
-    right: 28px;
+    left: 24px;
+    right: 24px;
     height: 3px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     border-radius: 9999px;
     opacity: 0;
     transition: opacity 0.2s ease;
-    z-index: 4;
   }
 
   .scroll-fill {

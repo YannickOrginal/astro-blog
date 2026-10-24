@@ -22,7 +22,7 @@ const { title = 'Yannick Derouaux | Living Proof', description = 'Persönliche W
   </head>
   <body>
     <Header />
-    <main>
+    <main class="site-main">
       <slot />
     </main>
     <AiBadge />
@@ -31,7 +31,14 @@ const { title = 'Yannick Derouaux | Living Proof', description = 'Persönliche W
 </html>
 
 <style>
-  main {
+  .site-main {
     min-height: calc(100vh - 80px);
+    padding-top: 3.5rem; /* Sicherer Abstand: Header schwebt frei ueber der H1 */
+  }
+
+  @media (max-width: 640px) {
+    .site-main {
+      padding-top: 2.5rem;
+    }
   }
 </style>

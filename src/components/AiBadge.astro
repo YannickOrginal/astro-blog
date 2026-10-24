@@ -1,0 +1,53 @@
+---
+---
+<aside class="floating-ai-badge" aria-label="AI Generated Content Hinweis">
+  <div class="circle-ai" title="AI Assisted Architecture & Development">
+    <span>AI</span>
+  </div>
+</aside>
+
+<style>
+  .floating-ai-badge {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 40;
+    pointer-events: auto;
+    user-select: none;
+  }
+
+  .circle-ai {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--accent, #38bdf8);
+    background: var(--header-bg);
+    color: var(--accent, #38bdf8);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--card-shadow);
+    cursor: default;
+    transition: all 0.25s ease;
+  }
+
+  .floating-ai-badge:hover .circle-ai {
+    background: var(--accent, #38bdf8);
+    color: var(--bg-main, #0f172a);
+    box-shadow: 0 0 16px var(--accent, #38bdf8);
+    transform: scale(1.08);
+  }
+
+  @media (max-width: 600px) {
+    .floating-ai-badge {
+      bottom: 16px;
+      right: 16px;
+    }
+  }
+</style>

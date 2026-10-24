@@ -1,27 +1,37 @@
---- 
-import Header from "../components/Header.astro";
-import "../styles/global.css";
+---
+import Header from '../components/Header.astro';
+import AiBadge from '../components/AiBadge.astro';
+import '../styles/global.css';
 
 interface Props {
-  title: string;
-  theme?: string;
+  title?: string;
+  description?: string;
 }
 
-const { title, theme = "light" } = Astro.props;
+const { title = 'Yannick Derouaux | Living Proof', description = 'Persönliche Website und Blog zu Systemarchitektur, Engineering und IT.' } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="de" data-theme={theme}>
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <script src="/scripts/swipe.js" is:inline></script>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class={theme}>
+  <body>
     <Header />
     <main>
       <slot />
     </main>
+    <AiBadge />
+    <script src="/scripts/swipe.js" defer></script>
   </body>
 </html>
+
+<style>
+  main {
+    min-height: calc(100vh - 80px);
+  }
+</style>

@@ -1,37 +1,46 @@
-﻿---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+---
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id || post.slug },
-    props: post,
-  }));
+  return posts.map((post) => {
+    const rawId = post.id || post.slug || '';
+    const cleanSlug = rawId.replace(/\.[^/.]+$/, '');
+    return {
+      params: { slug: cleanSlug },
+      props: { post },
+    };
+  });
 }
 
-type Props = CollectionEntry<'blog'>;
-
-const post = Astro.props;
+const { post } = Astro.props;
 const { Content } = await render(post);
+
+const title = post.data?.title || 'Blogpost';
+const desc = post.data?.description || '';
 const rawDate = post.data?.pubDate || post.data?.date;
 let formattedDate = '';
 if (rawDate) {
   const d = new Date(rawDate);
   if (!isNaN(d.getTime())) {
-    formattedDate = d.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+    formattedDate = d.toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 }
 ---
 
-<Layout title={post.data?.title || 'Blogpost'}>
+<Layout title={`${title} | Yannick Derouaux`} description={desc}>
   <main class="post-container">
     <a href="/blog" class="back-link">&larr; Zurück zur Übersicht</a>
-    <article class="prose">
+    <article class="prose card">
       <header class="post-header">
         {formattedDate && <time datetime={new Date(rawDate).toISOString()}>{formattedDate}</time>}
-        <h1>{post.data?.title}</h1>
-        {post.data?.description && <p class="description">{post.data.description}</p>}
+        <h1>{title}</h1>
+        {desc && <p class="description">{desc}</p>}
       </header>
       <hr class="divider" />
       <div class="content">
@@ -48,71 +57,95 @@ if (rawDate) {
     padding: 0 24px 80px 24px;
   }
   .back-link {
-    color: var(--accent, #6799ff);
+    color: var(--accent);
     text-decoration: none;
     display: inline-block;
     margin-bottom: 1.5rem;
-    font-weight: 500;
+    font-weight: 600;
   }
   .back-link:hover {
     text-decoration: underline;
   }
+  .prose {
+    padding: 2.5rem;
+  }
   .post-header time {
-    color: var(--accent, #6799ff);
+    color: var(--accent);
     font-size: 0.9rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
   }
   .post-header h1 {
     font-size: 2.25rem;
-    margin: 12px 0;
+    margin: 0 0 1rem 0;
     line-height: 1.25;
-    color: var(--text-main, #fff);
+    color: var(--text-main);
   }
   .description {
-    color: var(--text-muted, #8b9bbe);
+    color: var(--text-muted);
     font-size: 1.15rem;
+    line-height: 1.6;
     margin: 0;
   }
   .divider {
     border: none;
-    border-top: 1px solid var(--border, #333);
-    margin: 24px 0 32px 0;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  .content {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
   }
   .content :global(h2) {
-    font-size: 1.5rem;
-    margin-top: 2rem;
-    color: var(--text-main, #fff);
-    border-bottom: 1px solid var(--border, #333);
-    padding-bottom: 0.3rem;
+    font-size: 1.6rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--text-main);
   }
   .content :global(h3) {
-    font-size: 1.25rem;
-    margin-top: 1.5rem;
-    color: var(--text-main, #fff);
+    font-size: 1.3rem;
+    margin: 1.5rem 0 0.75rem 0;
+    color: var(--text-main);
   }
   .content :global(p) {
-    margin: 1rem 0;
-    color: var(--text-main, #ccc);
-    opacity: 0.9;
-    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    color: var(--text-muted);
   }
-  .content :global(pre) {
-    background: var(--bg-card, #1a1a1a);
-    border: 1px solid var(--border, #333);
-    padding: 16px;
-    border-radius: 8px;
-    overflow-x: auto;
+  .content :global(ul), .content :global(ol) {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.5rem;
+  }
+  .content :global(li) {
+    margin-bottom: 0.5rem;
   }
   .content :global(code) {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: ui-monospace, monospace;
     font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    color: var(--accent);
   }
-  .content :global(a) {
-    color: var(--accent, #6799ff);
-    text-decoration: none;
+  .content :global(pre) {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
   }
-  .content :global(a:hover) {
-    text-decoration: underline;
+  .content :global(pre code) {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--text-main);
+  }
+  @media (max-width: 640px) {
+    .prose {
+      padding: 1.5rem;
+    }
   }
 </style>

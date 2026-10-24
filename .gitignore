@@ -25,3 +25,5 @@ pnpm-debug.log*
 .aider*
 
 .wrangler/
+
+audit_input.txt

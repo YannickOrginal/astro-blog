@@ -6,7 +6,7 @@
 :root {
   --bg-main: #f1f5f9;
   --bg-card: #ffffff;
-  --header-bg: rgba(241, 245, 249, 0.85);
+  --header-bg: rgba(241, 245, 249, 0.35);
   --border: #cbd5e1;
   --border-hover: #0284c7;
   --text-main: #090d16;
@@ -24,7 +24,7 @@
 :root.theme-night {
   --bg-main: #090d16;
   --bg-card: rgba(17, 24, 39, 0.75);
-  --header-bg: rgba(9, 13, 22, 0.85);
+  --header-bg: rgba(9, 13, 22, 0.28);
   --border: rgba(56, 189, 248, 0.2);
   --border-hover: rgba(56, 189, 248, 0.7);
   --text-main: #f8fafc;
@@ -42,7 +42,7 @@
 :root.theme-sunset {
   --bg-main: #16120e;
   --bg-card: rgba(34, 26, 20, 0.85);
-  --header-bg: rgba(22, 18, 14, 0.50);
+  --header-bg: rgba(22, 18, 14, 0.30);
   --border: rgba(253, 186, 116, 0.28);
   --border-hover: #fdba74;
   --text-main: #ffffff;
@@ -104,4 +104,31 @@ html, body {
   transform: translateY(-3px);
   border-color: var(--border-hover) !important;
   box-shadow: var(--card-glow);
+}
+/* ==========================================================================
+   Responsive & Device-Aware Layout Rules
+   ========================================================================== */
+
+:root {
+  --content-padding: 24px;
+  --container-width: 800px;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --content-padding: 16px;
+  }
+
+  /* Kacheln auf dem Smartphone mit voller Breite */
+  .card,
+  .story-card,
+  .overview-card,
+  .article-card {
+    padding: 1.15rem !important;
+  }
+
+  /* Überschriften auf Mobilgeräten harmonisch skalieren */
+  h1 {
+    font-size: 1.85rem !important;
+  }
 }

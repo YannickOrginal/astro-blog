@@ -23,9 +23,9 @@
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 2px solid var(--accent, #38bdf8);
+    border: 2px solid var(--accent);
     background: var(--header-bg);
-    color: var(--accent, #38bdf8);
+    color: var(--accent);
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 0.9rem;
     font-weight: 700;
@@ -38,16 +38,23 @@
   }
 
   .floating-ai-badge:hover .circle-ai {
-    background: var(--accent, #38bdf8);
-    color: var(--bg-main, #0f172a);
-    box-shadow: 0 0 16px var(--accent, #38bdf8);
+    background: var(--accent);
+    color: var(--bg-main);
+    box-shadow: 0 0 16px var(--accent);
     transform: scale(1.08);
   }
 
-  @media (max-width: 600px) {
+  /* Smartphone-Format: 36px Durchmesser, spart Screen-Fläche */
+  @media (max-width: 640px) {
     .floating-ai-badge {
-      bottom: 16px;
-      right: 16px;
+      bottom: 14px;
+      right: 14px;
+    }
+    .circle-ai {
+      width: 36px;
+      height: 36px;
+      font-size: 0.75rem;
+      border-width: 1.5px;
     }
   }
 </style>

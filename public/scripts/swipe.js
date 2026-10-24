@@ -1,5 +1,8 @@
 // Intelligente, zyklische Swipe-Navigation
 (function() {
+  // Nur auf echten Touch-Geraeten aktivieren
+  if (!window.matchMedia('(pointer: coarse)').matches) return;
+
   const mainRoutes = ['/', '/blog', '/about'];
 
   let touchStartX = 0;

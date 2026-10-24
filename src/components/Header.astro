@@ -68,20 +68,22 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 </script>
 
 <style>
-  /* Schwebende Wrapper-Positionierung mit sauberer Layer-Isolation */
+  /* Fester Wrapper: pointer-events: none verhindert Dead-Zones links/rechts */
   .header-floating-wrapper {
-    position: sticky;
+    position: fixed;
     top: 1rem;
+    left: 0;
+    right: 0;
     z-index: 100;
     width: 100%;
     display: flex;
     justify-content: center;
     padding: 0 16px;
     pointer-events: none;
-    isolation: isolate; /* Verhindert Stacking-Konflikte mit darunterliegendem Content */
+    isolation: isolate;
   }
 
-  /* Die abgerundete Glas-Pille mit GPU-beschleunigtem Blur */
+  /* Klickbare Glas-Pille mit echter GPU-Compositor-Zuordnung */
   .header {
     pointer-events: auto;
     position: relative;
@@ -89,16 +91,15 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     max-width: 860px;
     height: 66px;
     border-radius: 9999px;
-    
-    /* Compositor-Zuweisung fuer zuverlaessiges Rendering */
+
+    /* GPU-Compositing erzwingen */
     transform: translateZ(0);
-    will-change: backdrop-filter;
-    
-    /* Glassmorphism mit Fallback */
+    will-change: backdrop-filter, transform;
+
     background-color: var(--header-bg);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    
+
     border: 1px solid var(--border);
     box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.45),
                 0 0 20px rgba(0, 0, 0, 0.2),
@@ -115,7 +116,6 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     justify-content: space-between;
   }
 
-  /* Logo links */
   .logo-link {
     text-decoration: none;
   }
@@ -144,7 +144,6 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     transform: scale(1.05);
   }
 
-  /* Navigation: Kapsel-Buttons */
   .nav-links {
     display: flex;
     align-items: center;
@@ -188,7 +187,6 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     box-shadow: 0 0 12px var(--accent);
   }
 
-  /* Theme Switcher */
   .theme-switch-wrapper {
     display: flex;
     align-items: center;
@@ -219,7 +217,6 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     background: rgba(255, 255, 255, 0.12);
   }
 
-  /* Scroll-Progressbar */
   .scroll-progress-track {
     position: absolute;
     bottom: 0;
@@ -237,7 +234,6 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     transition: width 0.08s linear;
   }
 
-  /* Responsive Anpassungen */
   @media (max-width: 640px) {
     .header-floating-wrapper {
       top: 0.5rem;

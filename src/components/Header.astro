@@ -122,50 +122,50 @@ const currentPath = pathname.replace(/\/$/, "");
     height: 64px;
     border-radius: 9999px;
     overflow: hidden;
-    transform: translateZ(0);
-    will-change: backdrop-filter;
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
       0 4px 30px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  @supports not (backdrop-filter: blur(12px)) {
-    .header {
-      background-color: rgba(255, 255, 255, 0.95);
-    }
+  .header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: background-color 0.25s ease;
   }
 
   :global(.theme-night) .header {
-    background-color: rgba(11, 15, 23, 0.65);
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 
       0 12px 32px -4px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.12);
   }
 
-  @supports not (backdrop-filter: blur(12px)) {
-    :global(.theme-night) .header {
-      background-color: rgba(11, 15, 23, 0.95);
-    }
+  :global(.theme-night) .header::before {
+    background-color: rgba(11, 15, 23, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   :global(.theme-sunset) .header {
-    background-color: rgba(26, 16, 37, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
       0 12px 32px -4px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
-  @supports not (backdrop-filter: blur(12px)) {
-    :global(.theme-sunset) .header {
-      background-color: rgba(26, 16, 37, 0.95);
-    }
+  :global(.theme-sunset) .header::before {
+    background-color: rgba(26, 16, 37, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .nav-container {
@@ -175,6 +175,8 @@ const currentPath = pathname.replace(/\/$/, "");
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
   .logo-link {

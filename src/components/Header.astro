@@ -16,7 +16,6 @@ const currentPath = pathname.replace(/\/$/, "");
         <a href="/about" class={currentPath === "/about" ? "active" : ""}>About</a>
       </nav>
 
-      <!-- 3-Positionen Theme Switch -->
       <div class="theme-switch-wrapper">
         <div class="theme-switch" role="group" aria-label="Farbpaletten Schalter">
           <div class="theme-slider" id="theme-slider"></div>
@@ -27,7 +26,6 @@ const currentPath = pathname.replace(/\/$/, "");
       </div>
     </div>
 
-    <!-- Scroll-Fortschrittsleiste -->
     <div class="scroll-track" id="scroll-track">
       <div class="scroll-fill" id="scroll-fill"></div>
       <div class="scroll-cursor-bubble" id="scroll-cursor-bubble"></div>
@@ -124,27 +122,18 @@ const currentPath = pathname.replace(/\/$/, "");
     height: 64px;
     border-radius: 9999px;
     overflow: hidden;
-
     transform: translateZ(0);
     will-change: backdrop-filter;
-
-    /* 1. Hintergrundfarbe */
     background-color: rgba(255, 255, 255, 0.2);
-
-    /* 2. Shader & Vendor-Präfix */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-
-    /* 3. Glassmorphism Polish */
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 
       0 4px 30px rgba(0, 0, 0, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
-
     transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  /* Progressive Enhancement Fallback */
   @supports not (backdrop-filter: blur(12px)) {
     .header {
       background-color: rgba(255, 255, 255, 0.95);

@@ -27,11 +27,10 @@ const currentPath = pathname.replace(/\/$/, "");
       </div>
     </div>
 
-    <!-- Scroll-Fortschrittsleiste mit Meilenstein-Bubbles -->
+    <!-- Scroll-Fortschrittsleiste -->
     <div class="scroll-track" id="scroll-track">
       <div class="scroll-fill" id="scroll-fill"></div>
       <div class="scroll-cursor-bubble" id="scroll-cursor-bubble"></div>
-      
       <div class="milestone-bubble" style="left: 25%;" data-point="25"></div>
       <div class="milestone-bubble" style="left: 50%;" data-point="50"></div>
       <div class="milestone-bubble" style="left: 75%;" data-point="75"></div>
@@ -117,7 +116,7 @@ const currentPath = pathname.replace(/\/$/, "");
     isolation: isolate;
   }
 
-  /* Exakter Glass-Card Shader auf der Floating Capsule */
+  /* Exakter 1:1 .glass-card Shader */
   .header {
     pointer-events: auto;
     position: relative;
@@ -127,7 +126,6 @@ const currentPath = pathname.replace(/\/$/, "");
     border-radius: 9999px;
     overflow: hidden;
 
-    /* GPU-Rendering & Tiefen-Shader */
     transform: translateZ(0);
     will-change: backdrop-filter;
 
@@ -145,7 +143,7 @@ const currentPath = pathname.replace(/\/$/, "");
     transition: all 0.3s ease;
   }
 
-  /* Oberes Lichtkanten-Highlight */
+  /* Exakte .glass-card Lichtkante Oben */
   .header::before {
     content: '';
     position: absolute;
@@ -163,13 +161,13 @@ const currentPath = pathname.replace(/\/$/, "");
     z-index: 3;
   }
 
-  /* Linke Lichtbrechung */
+  /* Exakte .glass-card Lichtkante Links */
   .header::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 2px;
+    width: 1px;
     height: 100%;
     background: linear-gradient(
       180deg,
@@ -179,27 +177,6 @@ const currentPath = pathname.replace(/\/$/, "");
     );
     pointer-events: none;
     z-index: 3;
-  }
-
-  /* Theme-Anpassungen für Dunkel-/Sunset-Modus bei Beibehaltung der Glaskanten */
-  :global(.theme-night) .header {
-    background: rgba(11, 15, 23, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
-      0 12px 36px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-      inset 0 0 14px 4px rgba(255, 255, 255, 0.08);
-  }
-
-  :global(.theme-sunset) .header {
-    background: rgba(26, 16, 37, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow: 
-      0 12px 36px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.45),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 0 14px 4px rgba(244, 63, 94, 0.12);
   }
 
   .nav-container {
@@ -257,13 +234,8 @@ const currentPath = pathname.replace(/\/$/, "");
     transition: color 0.2s ease;
   }
 
-  .nav-links a:hover { 
-    color: var(--text-main); 
-  }
-
-  .nav-links a.active { 
-    color: var(--accent); 
-  }
+  .nav-links a:hover { color: var(--text-main); }
+  .nav-links a.active { color: var(--accent); }
 
   /* 3-Position Slider */
   .theme-switch-wrapper {
@@ -315,7 +287,7 @@ const currentPath = pathname.replace(/\/$/, "");
     transform: scale(1.15);
   }
 
-  /* Scroll Track & Bubbles an der Unterkante */
+  /* Scroll Track & Bubbles */
   .scroll-track {
     position: absolute;
     bottom: 0;

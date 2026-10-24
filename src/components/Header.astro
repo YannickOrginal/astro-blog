@@ -102,20 +102,21 @@ const currentPath = pathname.replace(/\/$/, "");
 </script>
 
 <style>
+  /* 1. Wrapper ohne isolation: isolate, damit Pixel darunter abgetastet werden */
   .header-floating-wrapper {
     position: fixed;
     top: 1rem;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1000;
     width: 100%;
     display: flex;
     justify-content: center;
     padding: 0 16px;
     pointer-events: none;
-    isolation: isolate;
   }
 
+  /* 2. Header ohne hartes overflow: hidden, direkte GPU-Freigabe */
   .header {
     pointer-events: auto;
     position: relative;
@@ -123,34 +124,24 @@ const currentPath = pathname.replace(/\/$/, "");
     max-width: 860px;
     height: 64px;
     border-radius: 9999px;
-    overflow: hidden;
 
-    transform: translateZ(0);
-    will-change: backdrop-filter;
-
-    /* 1. Erst der Background */
-    background: rgba(255, 255, 255, 0.2);
-
-    /* 2. Direkt danach der Backdrop-Filter (Standard + Fallback) */
+    /* Hintergrund zuerst, dann direkt der Backdrop-Filter */
+    background-color: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 
     border: 1px solid rgba(255, 255, 255, 0.3);
     box-shadow: 
-      0 10px 30px -4px rgba(0, 0, 0, 0.25),
+      0 12px 30px -4px rgba(0, 0, 0, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
-    transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   :global(.theme-night) .header {
-    /* 1. Erst der Background */
-    background: rgba(11, 15, 23, 0.7);
-
-    /* 2. Direkt danach der Filter */
+    background-color: rgba(11, 15, 23, 0.7);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 
       0 12px 32px -4px rgba(0, 0, 0, 0.5),
@@ -158,13 +149,9 @@ const currentPath = pathname.replace(/\/$/, "");
   }
 
   :global(.theme-sunset) .header {
-    /* 1. Erst der Background */
-    background: rgba(26, 16, 37, 0.75);
-
-    /* 2. Direkt danach der Filter */
+    background-color: rgba(26, 16, 37, 0.75);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
       0 12px 32px -4px rgba(0, 0, 0, 0.5),
@@ -276,6 +263,7 @@ const currentPath = pathname.replace(/\/$/, "");
     transform: scale(1.15);
   }
 
+  /* Scroll Track passgenau an die Unterkante */
   .scroll-track {
     position: absolute;
     bottom: 0;

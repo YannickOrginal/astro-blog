@@ -1,18 +1,16 @@
----
-import Layout from '../layouts/Layout.astro';
-import ProfileHero from '../components/ProfileHero.astro';
-import ProfileOverview from '../components/ProfileOverview.astro';
-import CoreCompetenciesGrid from '../components/CoreCompetenciesGrid.astro';
-import PrincipleCards from '../components/PrincipleCards.astro';
-import SwipeNavigation from '../components/SwipeNavigation.astro';
-import '../styles/global.css';
+--- 
+import Layout from "../layouts/Layout.astro";
+import ProfileHero from "../components/ProfileHero.astro";
+import ProfileOverview from "../components/ProfileOverview.astro";
+import CoreCompetenciesGrid from "../components/CoreCompetenciesGrid.astro";
+import PrincipleCards from "../components/PrincipleCards.astro";
 ---
 
 <Layout title="Yannick | Engineering & Systems">
-  <main class="container">
+  <div class="container">
     <ProfileHero />
     <ProfileOverview />
     <CoreCompetenciesGrid />
     <PrincipleCards />
-  </main>
+  </div>
 </Layout>

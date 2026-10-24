@@ -1,24 +1,26 @@
-﻿---
+---
 ---
 <section class="profile-overview">
   <div class="overview-container">
-    <h2>Über mich & Systemansatz</h2>
+    <h2>Über mich &amp; Systemansatz</h2>
     <p class="lead">
       Mein Weg führt nicht über oberflächliche Trends, sondern über handfeste Präzision: von der mechanischen Fehleranalyse und Endmontage komplexer Industrieanlagen über die elektrotechnische Dokumentation im Energie- und Kraftwerkssektor bis hin zu deterministischer Software- und Netzwerkarchitektur.
     </p>
+
     <div class="overview-grid">
-      <div class="overview-card">
+      <article class="card overview-card">
         <h3>First-Principles Mindset</h3>
         <p>
           Ob Stromlaufplan, VLAN-Segmentierung oder agentischer LLM-Workflow: Für mich ist jede Struktur ein geschlossenes System, das bis zur Wurzel verstanden, gemessen und optimiert werden muss.
         </p>
-      </div>
-      <div class="overview-card">
+      </article>
+
+      <article class="card overview-card">
         <h3>Präzision unter Last</h3>
         <p>
           Disziplin ist keine Theorie. Im karnevalistischen Gardetanz (Partnerakrobatik und Hebefiguren) und leistungsorientierten Kraftsport gibt es null Fehlertoleranz. Diese Verlässlichkeit prägt meine Arbeitsweise.
         </p>
-      </div>
+      </article>
     </div>
   </div>
 </section>
@@ -26,17 +28,23 @@
 <style>
   .profile-overview {
     padding: 3rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border);
   }
   .overview-container {
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 24px;
+  }
+  .profile-overview h2 {
+    font-size: 1.75rem;
+    color: var(--text-main);
+    margin: 0 0 1rem 0;
   }
   .lead {
     font-size: 1.15rem;
     line-height: 1.6;
-    color: #e2e8f0;
-    margin-bottom: 2rem;
+    color: var(--text-muted);
+    margin: 0 0 2rem 0;
   }
   .overview-grid {
     display: grid;
@@ -44,21 +52,19 @@
     gap: 1.5rem;
   }
   .overview-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 1.25rem;
+    padding: 1.5rem;
   }
   .overview-card h3 {
-    margin-top: 0;
-    font-size: 1.05rem;
-    color: #38bdf8;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
   }
   .overview-card p {
-    margin-bottom: 0;
+    margin: 0;
     font-size: 0.95rem;
-    line-height: 1.5;
-    color: #94a3b8;
+    line-height: 1.55;
+    color: var(--text-muted);
   }
   @media (max-width: 640px) {
     .overview-grid {

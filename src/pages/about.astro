@@ -1,46 +1,44 @@
 ---
-import Header from '../components/Header.astro';
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
 ---
 
-<Header />
+<Layout title="Über mich | Yannick Derouaux">
+  <main class="container">
+    <section class="profile-header">
+      <h1>Yannick Derouaux</h1>
+      <p class="tagline">Staatlich geprüfter Elektrotechniker & Systems Builder</p>
+    </section>
 
-<main class="container">
-  <section class="profile-header">
-    <h1>Yannick Derouaux</h1>
-    <p class="tagline">Staatlich geprüfter Elektrotechniker & Systems Builder</p>
-  </section>
+    <div class="bento-grid">
+      <div class="card card-wide">
+        <h3>Fokus & Handwerk</h3>
+        <p>
+          Spezialisiert auf elektrische Dokumentation, Systemsteuerungen, Netzwerk-Infrastruktur 
+          und Automatisierung. Erfahrung in Industrieanlagen, CAD/ECAD-Workflows sowie praktischer 
+          Schaltungs- und Fehleranalyse.
+        </p>
+      </div>
 
-  <div class="bento-grid">
-    <div class="card card-wide">
-      <h3>Fokus & Handwerk</h3>
-      <p>
-        Spezialisiert auf elektrische Dokumentation, Systemsteuerungen, Netzwerk-Infrastruktur 
-        und Automatisierung. Erfahrung in Industrieanlagen, CAD/ECAD-Workflows sowie praktischer 
-        Schaltungs- und Fehleranalyse.
-      </p>
+      <div class="card">
+        <h3>Tech Stack</h3>
+        <ul class="tech-list">
+          <li>TypeScript / Astro</li>
+          <li>Linux / Debian / RouterOS</li>
+          <li>VLANs / Unbound / Zero Trust</li>
+          <li>E-CAD / Meridian</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>Interessen</h3>
+        <p>
+          High-Performance Hardware, Custom Setups, Performance-Tuning und 
+          lokale LLM-Workflows via Ollama & Aider.
+        </p>
+      </div>
     </div>
-
-    <div class="card">
-      <h3>Tech Stack</h3>
-      <ul class="tech-list">
-        <li>TypeScript / Astro</li>
-        <li>Linux / Debian / RouterOS</li>
-        <li>VLANs / Unbound / Zero Trust</li>
-        <li>E-CAD / Meridian</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h3>Interessen</h3>
-      <p>
-        High-Performance Hardware, Custom Setups, Performance-Tuning und 
-        lokale LLM-Workflows via Ollama & Aider.
-      </p>
-    </div>
-  </div >
-
-</main>
+  </main>
+</Layout>
 
 <style>
   .container {
@@ -90,6 +88,7 @@ import '../styles/global.css';
     margin: 0;
     color: var(--text-muted);
     font-size: 0.95rem;
+    line-height: 1.5;
   }
   .tech-list {
     margin: 0;
@@ -105,8 +104,7 @@ import '../styles/global.css';
     .bento-grid {
       grid-template-columns: 1fr;
     }
-    .card-wide {
-      grid-column: span 1;
+    .card-wide {grid-column: span 1;
     }
   }
 </style>

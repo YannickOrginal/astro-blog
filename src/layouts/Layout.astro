@@ -1,21 +1,27 @@
----
-layout: true
-const { title, theme = 'light' } = Astro.props;
+--- 
+import Header from "../components/Header.astro";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  theme?: string;
+}
+
+const { title, theme = "light" } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de" data-theme={theme}>
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <link rel="stylesheet" href="/styles/global.css" />
-    <!-- Script für Touch-Swipe-Navigation, eingebunden im Head für frühe Ausführung -->
-    <script src="/scripts/swipe.js" defer></script> 
-</head>
-<body class={theme}>
+    <script src="/scripts/swipe.js" is:inline></script>
+  </head>
+  <body class={theme}>
+    <Header />
     <main>
-        <slot />
+      <slot />
     </main>
-</body>
+  </body>
 </html>

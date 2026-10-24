@@ -8,6 +8,11 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    optimizeDeps: {
+      exclude: ['@astrojs/cloudflare'],
+    },
+  },
   site: 'https://example.com',
   integrations: [mdx(), sitemap()],
 

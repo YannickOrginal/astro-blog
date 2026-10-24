@@ -1,12 +1,11 @@
 ﻿---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-import Header from '../../components/Header.astro';
-import '../../styles/global.css';
+import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.id },
+    params: { slug: post.id || post.slug },
     props: post,
   }));
 }
@@ -15,34 +14,32 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+const rawDate = post.data?.pubDate || post.data?.date;
+let formattedDate = '';
+if (rawDate) {
+  const d = new Date(rawDate);
+  if (!isNaN(d.getTime())) {
+    formattedDate = d.toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+}
 ---
 
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{post.data.title}</title>
-  </head>
-  <body>
-    <Header />
-    <main class="post-container">
-      <article class="prose">
-        <header class="post-header">
-          <time datetime={post.data.pubDate ? new Date(post.data.pubDate).toISOString() : ''}>
-            {post.data.pubDate ? new Date(post.data.pubDate).toLocaleDateString('de-DE') : ''}
-          </time>
-          <h1>{post.data.title}</h1>
-          {post.data.description && <p class="description">{post.data.description}</p>}
-        </header>
-        <hr class="divider" />
-        <div class="content">
-          <Content />
-        </div>
-      </article>
-    </main>
-  </body>
-</html>
+<Layout title={post.data?.title || 'Blogpost'}>
+  <main class="post-container">
+    <a href="/blog" class="back-link">&larr; Zurück zur Übersicht</a>
+    <article class="prose">
+      <header class="post-header">
+        {formattedDate && <time datetime={new Date(rawDate).toISOString()}>{formattedDate}</time>}
+        <h1>{post.data?.title}</h1>
+        {post.data?.description && <p class="description">{post.data.description}</p>}
+      </header>
+      <hr class="divider" />
+      <div class="content">
+        <Content />
+      </div>
+    </article>
+  </main>
+</Layout>
 
 <style>
   .post-container {
@@ -50,47 +47,59 @@ const { Content } = await render(post);
     margin: 40px auto;
     padding: 0 24px 80px 24px;
   }
+  .back-link {
+    color: var(--accent, #6799ff);
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
   .post-header time {
-    color: var(--accent);
+    color: var(--accent, #6799ff);
     font-size: 0.9rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    display: block;
   }
   .post-header h1 {
     font-size: 2.25rem;
     margin: 12px 0;
     line-height: 1.25;
-    color: var(--text-main);
+    color: var(--text-main, #fff);
   }
   .description {
-    color: var(--text-muted);
+    color: var(--text-muted, #8b9bbe);
     font-size: 1.15rem;
     margin: 0;
   }
   .divider {
     border: none;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border, #333);
     margin: 24px 0 32px 0;
   }
   .content :global(h2) {
     font-size: 1.5rem;
     margin-top: 2rem;
-    color: var(--text-main);
-    border-bottom: 1px solid var(--border);
+    color: var(--text-main, #fff);
+    border-bottom: 1px solid var(--border, #333);
     padding-bottom: 0.3rem;
   }
   .content :global(h3) {
     font-size: 1.25rem;
     margin-top: 1.5rem;
-    color: var(--text-main);
+    color: var(--text-main, #fff);
   }
   .content :global(p) {
     margin: 1rem 0;
-    color: var(--text-main);
+    color: var(--text-main, #ccc);
     opacity: 0.9;
+    line-height: 1.6;
   }
   .content :global(pre) {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--bg-card, #1a1a1a);
+    border: 1px solid var(--border, #333);
     padding: 16px;
     border-radius: 8px;
     overflow-x: auto;
@@ -100,7 +109,7 @@ const { Content } = await render(post);
     font-size: 0.9em;
   }
   .content :global(a) {
-    color: var(--accent);
+    color: var(--accent, #6799ff);
     text-decoration: none;
   }
   .content :global(a:hover) {

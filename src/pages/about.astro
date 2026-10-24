@@ -1,54 +1,46 @@
-﻿---
+---
 import Header from '../components/Header.astro';
 import '../styles/global.css';
 ---
 
-<!doctype html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About | Yannick Derouaux</title>
-  </head>
-  <body>
-    <Header />
-    <main class="container">
-      <section class="profile-header">
-        <h1>Yannick Derouaux</h1>
-        <p class="tagline">Staatlich geprüfter Elektrotechniker &amp; Systems Builder</p>
-      </section>
+<Header />
 
-      <div class="bento-grid">
-        <div class="card card-wide">
-          <h3>Fokus &amp; Handwerk</h3>
-          <p>
-            Spezialisiert auf elektrische Dokumentation, Systemsteuerungen, Netzwerk-Infrastruktur 
-            und Automatisierung. Erfahrung in Industrieanlagen, CAD/ECAD-Workflows sowie praktischer 
-            Schaltungs- und Fehleranalyse.
-          </p>
-        </div>
+<main class="container">
+  <section class="profile-header">
+    <h1>Yannick Derouaux</h1>
+    <p class="tagline">Staatlich geprüfter Elektrotechniker & Systems Builder</p>
+  </section>
 
-        <div class="card">
-          <h3>Tech Stack</h3>
-          <ul class="tech-list">
-            <li>TypeScript / Astro</li>
-            <li>Linux / Debian / RouterOS</li>
-            <li>VLANs / Unbound / Zero Trust</li>
-            <li>E-CAD / Meridian</li>
-          </ul>
-        </div>
+  <div class="bento-grid">
+    <div class="card card-wide">
+      <h3>Fokus & Handwerk</h3>
+      <p>
+        Spezialisiert auf elektrische Dokumentation, Systemsteuerungen, Netzwerk-Infrastruktur 
+        und Automatisierung. Erfahrung in Industrieanlagen, CAD/ECAD-Workflows sowie praktischer 
+        Schaltungs- und Fehleranalyse.
+      </p>
+    </div>
 
-        <div class="card">
-          <h3>Interessen</h3>
-          <p>
-            High-Performance Hardware, Custom Setups, Performance-Tuning und 
-            lokale LLM-Workflows via Ollama &amp; Aider.
-          </p>
-        </div>
-      </div>
-    </main>
-  </body>
-</html>
+    <div class="card">
+      <h3>Tech Stack</h3>
+      <ul class="tech-list">
+        <li>TypeScript / Astro</li>
+        <li>Linux / Debian / RouterOS</li>
+        <li>VLANs / Unbound / Zero Trust</li>
+        <li>E-CAD / Meridian</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Interessen</h3>
+      <p>
+        High-Performance Hardware, Custom Setups, Performance-Tuning und 
+        lokale LLM-Workflows via Ollama & Aider.
+      </p>
+    </div>
+  </div >
+
+</main>
 
 <style>
   .container {

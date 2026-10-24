@@ -19,6 +19,12 @@ Vor jedem Abschluss einer Aufgabe müssen folgende Befehle im Projektordner fehl
 1. Typ- & Astro-Check: `npx astro check`
 2. Build-Verifizierung: `npm run build`
 
+## Tool-Regeln für Agenten
+- Verwende niemals `write_file` auf existierende Dateien in `src/`.
+- Führe Änderungen an Komponenten und Pages immer über Aider im Batch-Modus aus:
+  `aider --model ollama/gemma4 --yes-always --no-auto-commits --message "..." <Datei>`
+- Vor jedem Commit/Abschluss: `npm run build`.
+
 ## Dokumentations-Referenzen
 Ziehe diese Dokumentationen heran, bevor du an entsprechenden Bereichen arbeitest:
 - Routing & Middleware: https://docs.astro.build/en/guides/routing/

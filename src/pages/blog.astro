@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import Header from '../components/Header.astro';
+import Card from '../components/Card.astro';
+
+// Holt alle Blog-Posts
+const posts = await getCollection('blog');
+---
+
+<Layout title="Blog | Archiv">
+  <Header />
+  <main>
+    <section class="grid-section">
+      {posts.map((post) => (
+        <Card post={post} />
+      ))}
+    </section>
+  </main>
+</Layout>

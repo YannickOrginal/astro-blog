@@ -5,8 +5,8 @@ const currentPath = pathname.replace(/\/$/, "");
 
 <header class="header">
   <div class="nav-container">
-    <a href="/" class="brand">
-      <span class="brand-bracket">&lt;</span>YD<span class="brand-slash">/</span><span class="brand-bracket">&gt;</span>
+    <a href="/" class="logo-link">
+      <span class="circle-logo">YD</span>
     </a>
     
     <nav class="nav-links">
@@ -124,7 +124,7 @@ const currentPath = pathname.replace(/\/$/, "");
     align-items: center;
     gap: 1rem;
   }
-  .brand {
+  .logo-link {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     font-size: 1.15rem;
     font-weight: 700;
@@ -132,9 +132,25 @@ const currentPath = pathname.replace(/\/$/, "");
     text-decoration: none;
     letter-spacing: -0.5px;
   }
-  .brand-bracket { color: var(--accent); }
-  .brand-slash { color: var(--text-muted); }
-
+  .circle-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--accent, #38bdf8);
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--accent, #38bdf8);
+    font-family: ui-monospace, monospace;
+    font-weight: 700;
+    transition: all 0.25s ease;
+  }
+  .logo-link:hover .circle-logo {
+    background: var(--accent, #38bdf8);
+    color: var(--bg-main, #0f172a);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+  }
   .nav-links {
     display: flex;
     gap: 1.25rem;

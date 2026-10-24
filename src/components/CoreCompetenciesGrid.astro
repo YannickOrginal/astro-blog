@@ -1,0 +1,114 @@
+﻿---
+---
+<section class="competencies-section">
+  <div class="competencies-container">
+    <h2>Kernkompetenzen & Domänen</h2>
+    <div class="competencies-grid">
+      <div class="competency-column">
+        <div class="column-header">
+          <span class="tech-tag">Industrial & Electrical</span>
+          <h3>Klassisches Hard-Engineering</h3>
+        </div>
+        <p class="desc">
+          Fundiertes mechanisches Verständnis gepaart mit industrieller Elektrotechnik und sicherheitskritischer Dokumentation.
+        </p>
+        <ul class="spec-list">
+          <li><strong>Ausbildung:</strong> Industriemechaniker (Endmontage von Großmaschinen, mechanische Toleranzen & Fehleranalyse).</li>
+          <li><strong>Zertifizierung:</strong> Staatlich geprüfter Elektrotechniker.</li>
+          <li><strong>Fokus:</strong> Energie- & Kraftwerksanlagen, KKS-Kennzeichnungssysteme, Signalverfolgung.</li>
+          <li><strong>Engineering Base & ECAD:</strong> Normgerechte Stromlaufpläne, Schaltungsunterlagen und Revisionsprüfung.</li>
+        </ul>
+      </div>
+
+      <div class="competency-column">
+        <div class="column-header">
+          <span class="tech-tag">Systems & AI</span>
+          <h3>Digitale Infrastruktur & Workflows</h3>
+        </div>
+        <p class="desc">
+          Deterministische Systemadministration, Netzwerkarchitektur und praxisnahe Software-/KI-Pipelines.
+        </p>
+        <ul class="spec-list">
+          <li><strong>Netzwerk & Security:</strong> Multi-VLAN-Segmentierung, DNS-Sinkholes (Pi-hole/AdGuard), Zero-Trust-Gateways.</li>
+          <li><strong>Linux & Self-Hosting:</strong> Debian-Stacks, Docker-Container, Home Assistant (Matter/Thread-Infrastruktur).</li>
+          <li><strong>Code & Automatisierung:</strong> C#, Shell-Scripting, Astro/Vite und automatisierte CI/CD-Deployments.</li>
+          <li><strong>Agentic AI Workflows:</strong> Lokale LLM-Toolchains (Ollama, Aider CLI, Hermes) für iterative Entwicklung.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .competencies-section {
+    padding: 3rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .competencies-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .competencies-section h2 {
+    font-size: 1.5rem;
+    color: #f8fafc;
+    margin-bottom: 2rem;
+  }
+  .competencies-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .competency-column {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  .column-header {
+    margin-bottom: 1rem;
+  }
+  .tech-tag {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #38bdf8;
+    font-family: monospace;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .competency-column h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #f1f5f9;
+  }
+  .desc {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+  .spec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .spec-list li {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .spec-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: #38bdf8;
+  }
+  @media (max-width: 700px) {
+    .competencies-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

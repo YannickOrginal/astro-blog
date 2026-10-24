@@ -1,0 +1,73 @@
+﻿---
+---
+<section class="principles-section">
+  <div class="principles-container">
+    <h2>Prinzipien & Arbeitsweise</h2>
+    <div class="principles-grid">
+      <div class="card">
+        <span class="card-num">01</span>
+        <h3>Messen statt Raten</h3>
+        <p>Empirische Validierung über Vermutungen. Telemetrie, Logs und Benchmarks sind die Basis jeder Optimierung.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">02</span>
+        <h3>Prozessdisziplin</h3>
+        <p>Erfahrungen aus Leistungssport und akrobatischem Hebetanz übertragen auf Systeme: Null Fehlertoleranz unter Last.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">03</span>
+        <h3>End-to-End Verständnis</h3>
+        <p>Wer das Werkstück und den Stromkreis begreift, baut robustere Abstraktionen in Software und Netzwerk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .principles-section {
+    padding: 3rem 0;
+  }
+  .principles-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .principles-section h2 {
+    font-size: 1.5rem;
+    color: #f8fafc;
+    margin-bottom: 2rem;
+  }
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .card-num {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #38bdf8;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    color: #f1f5f9;
+  }
+  .card p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) {
+    .principles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

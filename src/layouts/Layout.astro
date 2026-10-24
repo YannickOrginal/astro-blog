@@ -1,0 +1,21 @@
+---
+layout: true
+const { title, theme = 'light' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="de" data-theme={theme}>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <!-- Script für Touch-Swipe-Navigation, eingebunden im Head für frühe Ausführung -->
+    <script src="/scripts/swipe.js" defer></script> 
+</head>
+<body class={theme}>
+    <main>
+        <slot />
+    </main>
+</body>
+</html>

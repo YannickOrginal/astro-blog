@@ -1,0 +1,54 @@
+---
+---
+<section class="personal-hero">
+  <div class="hero-intro">
+    <div class="badge-row">
+      <span class="badge-pill">Technik &amp; Praxis</span>
+      <span class="badge-pill">Rheinland</span>
+    </div>
+    <h1 class="headline">Hi, ich bin Yannick Derouaux.</h1>
+    <p class="lead-text">
+      Schon von klein auf fasziniert von Hardware, Code und vernetzten Systemen – aber genauso zuhause an der frischen Luft. Für mich gehören Bits, Bytes und industrielle Präzision untrennbar mit echter Bodenhaftung zusammen.
+    </p>
+  </div>
+
+  <div class="story-grid">
+    <div class="story-card">
+      <div class="card-icon">⚡</div>
+      <h3>Computer &amp; Systemfokus</h3>
+      <p>
+        Von den ersten eigenen Gehversuchen am Rechner bis hin zu deterministischer Netzwerkarchitektur, Linux-Stacks und industrieller Kraftwerkstechnik: Ich will Systeme nicht nur anwenden, sondern bis ins kleinste Detail durchdringen und beherrschen.
+      </p>
+    </div>
+
+    <div class="story-card">
+      <div class="card-icon">🌲</div>
+      <h3>Draußen &amp; Unterwegs</h3>
+      <p>
+        Ausgleich bedeutet Bewegung: Ob ausgedehnte Rucksack-Treks auf Trails, Sport unter freiem Himmel oder prägende Sommer auf Jugendfreizeiten – die Natur war immer das beste Kontrastprogramm.
+      </p>
+    </div>
+
+    <div class="story-card">
+      <div class="card-icon">🤝</div>
+      <h3>Einsatz &amp; Disziplin</h3>
+      <p>
+        Teamgeist und Verlässlichkeit unter Last: Von der frühen Zeit im Ehrenamt bei der Feuerwehr bis zur heutigen akrobatischen Präzision und den Partnerhebungen im rheinischen Gardetanz.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .personal-hero { padding: 2.5rem 0 3rem 0; border-bottom: 1px solid var(--border); margin-bottom: 2.5rem; }
+  .badge-row { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; }
+  .badge-pill { font-family: ui-monospace; font-size: 0.8rem; padding: 0.2rem 0.65rem; border-radius: 9999px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--accent); }
+  .headline { font-size: 2.5rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text-main); margin: 0 0 1rem 0; }
+  .lead-text { font-size: 1.15rem; line-height: 1.65; color: var(--text-muted); margin: 0 0 2rem 0; }
+  .story-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .story-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; display: flex; flex-direction: column; }
+  .card-icon { font-size: 1.35rem; margin-bottom: 0.75rem; }
+  .story-card h3 { font-size: 1.05rem; margin: 0 0 0.5rem 0; color: var(--text-main); }
+  .story-card p { font-size: 0.9rem; line-height: 1.55; color: var(--text-muted); margin: 0; }
+  @media (max-width: 768px) { .story-grid { grid-template-columns: 1fr; } .headline { font-size: 2rem; } }
+</style>

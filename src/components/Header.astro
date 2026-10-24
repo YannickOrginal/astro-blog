@@ -1,70 +1,105 @@
 ---
-const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const pathname = new URL(Astro.request.url).pathname;
+const currentPath = pathname.replace(/\/$/, "");
 ---
 
 <div class="header-floating-wrapper">
   <header class="header">
-    <div class="header-container">
+    <div class="nav-container">
       <a href="/" class="logo-link" aria-label="Startseite">
-        <div class="logo-circle">
-          <span>YD</span>
-        </div>
+        <span class="circle-logo">YD</span>
       </a>
-
-      <nav class="nav-links" aria-label="Hauptnavigation">
-        <a href="/" class:list={['nav-pill', { active: pathname === '/' }]}>Home</a>
-        <a href="/blog" class:list={['nav-pill', { active: pathname.startsWith('/blog') }]}>Blog</a>
-        <a href="/about" class:list={['nav-pill', { active: pathname === '/about' }]}>About</a>
+      
+      <nav class="nav-links">
+        <a href="/" class={currentPath === "" ? "active" : ""}>Home</a>
+        <a href="/blog" class={currentPath.startsWith("/blog") ? "active" : ""}>Blog</a>
+        <a href="/about" class={currentPath === "/about" ? "active" : ""}>About</a>
       </nav>
 
+      <!-- 3-Positionen Theme Switch -->
       <div class="theme-switch-wrapper">
-        <div class="theme-switch" role="group" aria-label="Farbschema wählen">
-          <button id="theme-day" class="theme-btn" type="button" title="Tag-Modus">☀️</button>
-          <button id="theme-night" class="theme-btn" type="button" title="Nacht-Modus">🌙</button>
-          <button id="theme-sunset" class="theme-btn" type="button" title="Sonnenuntergang-Modus">🌇</button>
+        <div class="theme-switch" role="group" aria-label="Farbpaletten Schalter">
+          <div class="theme-slider" id="theme-slider"></div>
+          <button type="button" class="theme-btn" data-theme="day" title="Tag-Modus">☀️</button>
+          <button type="button" class="theme-btn" data-theme="night" title="Nacht-Modus">🌙</button>
+          <button type="button" class="theme-btn" data-theme="sunset" title="Sonnenuntergang">🌇</button>
         </div>
       </div>
     </div>
 
-    <!-- Scroll-Progress-Balken an der Unterkante -->
-    <div class="scroll-progress-track">
-      <div id="scroll-progress-bar" class="scroll-progress-fill"></div>
+    <!-- Scroll-Fortschrittsleiste mit Meilenstein-Bubbles -->
+    <div class="scroll-track" id="scroll-track">
+      <div class="scroll-fill" id="scroll-fill"></div>
+      <div class="scroll-cursor-bubble" id="scroll-cursor-bubble"></div>
+      
+      <div class="milestone-bubble" style="left: 25%;" data-point="25"></div>
+      <div class="milestone-bubble" style="left: 50%;" data-point="50"></div>
+      <div class="milestone-bubble" style="left: 75%;" data-point="75"></div>
+      <div class="milestone-bubble" style="left: 100%;" data-point="100"></div>
     </div>
   </header>
 </div>
 
 <script is:inline>
-  (function () {
-    const applyTheme = (theme) => {
-      document.documentElement.classList.remove('theme-night', 'theme-sunset');
-      if (theme === 'night') document.documentElement.classList.add('theme-night');
-      if (theme === 'sunset') document.documentElement.classList.add('theme-sunset');
-      localStorage.setItem('theme', theme);
-    };
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll('.theme-btn');
+  const slider = document.getElementById('theme-slider');
+  const themes = ['day', 'night', 'sunset'];
 
-    const savedTheme = localStorage.getItem('theme') || 'night';
-    applyTheme(savedTheme);
+  function applyTheme(theme) {
+    root.classList.remove('theme-night', 'theme-sunset');
+    if (theme === 'night') root.classList.add('theme-night');
+    if (theme === 'sunset') root.classList.add('theme-sunset');
+    
+    const idx = themes.indexOf(theme);
+    if (slider && idx !== -1) {
+      slider.style.transform = `translateX(${idx * 100}%)`;
+    }
+    localStorage.setItem('yd_theme', theme);
+  }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('theme-day')?.addEventListener('click', () => applyTheme('day'));
-      document.getElementById('theme-night')?.addEventListener('click', () => applyTheme('night'));
-      document.getElementById('theme-sunset')?.addEventListener('click', () => applyTheme('sunset'));
+  const storedTheme = localStorage.getItem('yd_theme') || 'night';
+  applyTheme(storedTheme);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selected = btn.getAttribute('data-theme');
+      applyTheme(selected);
     });
+  });
 
-    const updateProgress = () => {
-      const progressBar = document.getElementById('scroll-progress-bar');
-      if (!progressBar) return;
+  const scrollFill = document.getElementById('scroll-fill');
+  const cursorBubble = document.getElementById('scroll-cursor-bubble');
+  const track = document.getElementById('scroll-track');
+  const milestoneBubbles = document.querySelectorAll('.milestone-bubble');
 
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = Math.min(Math.max(progress, 0), 100) + '%';
-    };
+  function updateScrollProgress() {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) {
+      if (track) track.style.opacity = '0';
+      return;
+    }
+    if (track) track.style.opacity = '1';
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress, { passive: true });
-    document.addEventListener('DOMContentLoaded', updateProgress);
-  })();
+    const scrolled = (window.scrollY / docHeight) * 100;
+    const clamped = Math.min(Math.max(scrolled, 0), 100);
+
+    if (scrollFill) scrollFill.style.width = `${clamped}%`;
+    if (cursorBubble) cursorBubble.style.left = `${clamped}%`;
+
+    milestoneBubbles.forEach((mb) => {
+      const pt = parseFloat(mb.getAttribute('data-point') || '0');
+      if (clamped >= pt) {
+        mb.classList.add('reached');
+      } else {
+        mb.classList.remove('reached');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener('resize', updateScrollProgress);
+  document.addEventListener('DOMContentLoaded', updateScrollProgress);
 </script>
 
 <style>
@@ -87,206 +122,190 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     position: relative;
     width: 100%;
     max-width: 860px;
-    height: 66px;
+    height: 64px;
     border-radius: 9999px;
 
-    /* GPU-Compositing */
+    /* Stabiler GPU-Layer */
     transform: translateZ(0);
-    will-change: backdrop-filter;
 
-    /* Fein abgestimmtes, klares Glas ohne Grauschleier */
-    background: rgba(255, 255, 255, 0.55);
+    /* Bewährte Glas-Formel aus dem Backup: Dynamisch via CSS-Variable */
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
+    background-color: var(--header-bg);
+    border: 1px solid var(--border);
 
-    border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 
-      0 10px 25px -5px rgba(0, 0, 0, 0.08),
-      0 4px 10px rgba(0, 0, 0, 0.04),
-      inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      0 12px 30px -4px rgba(0, 0, 0, 0.25),
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      inset 0 1px 1.5px rgba(255, 255, 255, 0.2);
 
-    overflow: hidden;
-    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  /* Dunkel-Modus: Rauchglas mit geringer Deckkraft */
-  :global(.theme-night) .header {
-    background: rgba(11, 15, 23, 0.38);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 
-      0 12px 30px -5px rgba(0, 0, 0, 0.45),
-      0 4px 12px rgba(0, 0, 0, 0.2),
-      inset 0 1px 1px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Sunset-Modus: Dezente Tönung */
-  :global(.theme-sunset) .header {
-    background: rgba(26, 16, 37, 0.42);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 
-      0 12px 30px -5px rgba(0, 0, 0, 0.45),
-      inset 0 1px 1px rgba(255, 255, 255, 0.22);
-  }
-
-  .header-container {
+  .nav-container {
     height: 100%;
     padding: 0 1.25rem;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
   }
 
   .logo-link {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
     text-decoration: none;
+    letter-spacing: -0.5px;
   }
 
-  .logo-circle {
+  .circle-logo {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--accent);
-    color: var(--accent);
-    background: rgba(255, 255, 255, 0.2);
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.9rem;
+    border: 2px solid var(--accent, #38bdf8);
+    background: rgba(56, 189, 248, 0.08);
+    color: var(--accent, #38bdf8);
+    font-family: ui-monospace, monospace;
     font-weight: 700;
-    letter-spacing: -0.5px;
-    transition: all 0.2s ease;
+    transition: all 0.25s ease;
   }
 
-  .logo-link:hover .logo-circle {
-    background: var(--accent);
-    color: var(--bg-main);
-    box-shadow: 0 0 16px var(--accent);
+  .logo-link:hover .circle-logo {
+    background: var(--accent, #38bdf8);
+    color: var(--bg-main, #0f172a);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
     transform: scale(1.05);
   }
 
   .nav-links {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 1.25rem;
   }
 
-  .nav-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 80px;
-    height: 36px;
-    padding: 0 0.9rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    background: rgba(0, 0, 0, 0.03);
+  .nav-links a {
     color: var(--text-muted);
-    font-weight: 600;
-    font-size: 0.9rem;
     text-decoration: none;
-    box-sizing: border-box;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.2s ease;
   }
 
-  :global(.theme-night) .nav-pill,
-  :global(.theme-sunset) .nav-pill {
-    border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
+  .nav-links a:hover { 
+    color: var(--text-main); 
   }
 
-  .nav-pill:hover {
-    border-color: var(--accent);
-    color: var(--text-main);
-    background: rgba(0, 0, 0, 0.06);
-    box-shadow: 0 0 12px var(--accent);
-    transform: translateY(-1px);
+  .nav-links a.active { 
+    color: var(--accent); 
   }
 
-  :global(.theme-night) .nav-pill:hover,
-  :global(.theme-sunset) .nav-pill:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .nav-pill:active {
-    transform: scale(0.96);
-  }
-
-  .nav-pill.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: 0 0 12px var(--accent);
-  }
-
-  :global(.theme-night) .nav-pill.active,
-  :global(.theme-sunset) .nav-pill.active {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
+  /* 3-Position Slider */
   .theme-switch-wrapper {
     display: flex;
     align-items: center;
   }
 
   .theme-switch {
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    padding: 3px;
-    border-radius: 9999px;
-    background: rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px;
+    width: 96px;
+    height: 32px;
+    box-sizing: border-box;
   }
 
-  :global(.theme-night) .theme-switch,
-  :global(.theme-sunset) .theme-switch {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
+  .theme-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 30px;
+    height: 26px;
+    background: var(--accent);
+    opacity: 0.25;
+    border-radius: 16px;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
   }
 
   .theme-btn {
+    flex: 1;
+    position: relative;
+    z-index: 2;
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 0.95rem;
-    padding: 4px 6px;
-    border-radius: 50%;
-    transition: transform 0.15s ease, background-color 0.15s ease;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.15s ease;
   }
 
   .theme-btn:hover {
     transform: scale(1.15);
-    background: rgba(0, 0, 0, 0.08);
   }
 
-  :global(.theme-night) .theme-btn:hover,
-  :global(.theme-sunset) .theme-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-
-  .scroll-progress-track {
+  /* Scroll Track & Bubbles - bündig innerhalb der Pille */
+  .scroll-track {
     position: absolute;
     bottom: 0;
-    left: 0;
-    width: 100%;
+    left: 24px;
+    right: 24px;
     height: 3px;
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--progress-bg, rgba(255, 255, 255, 0.08));
+    border-radius: 9999px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
   }
 
-  :global(.theme-night) .scroll-progress-track,
-  :global(.theme-sunset) .scroll-progress-track {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .scroll-progress-fill {
-    width: 0%;
+  .scroll-fill {
     height: 100%;
+    width: 0%;
+    border-radius: 9999px;
     background: var(--accent);
     box-shadow: 0 0 8px var(--accent);
-    transition: width 0.08s linear;
+    transition: width 0.05s linear;
   }
 
-  @media (max-width: 640px) {
+  .scroll-cursor-bubble {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--text-main);
+    box-shadow: 0 0 6px var(--accent);
+    pointer-events: none;
+    transition: left 0.05s linear;
+  }
+
+  .milestone-bubble {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .milestone-bubble.reached {
+    background: var(--accent);
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 0 6px var(--accent);
+  }
+
+  @media (max-width: 600px) {
     .header-floating-wrapper {
       top: 0.5rem;
       padding: 0 10px;
@@ -294,19 +313,15 @@ const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
     .header {
       height: 58px;
     }
-    .header-container {
-      padding: 0 0.85rem;
+    .nav-container {
+      padding: 0.6rem 1rem;
     }
-    .nav-pill {
-      min-width: 64px;
-      height: 32px;
-      font-size: 0.8rem;
-      padding: 0 0.5rem;
+    .nav-links {
+      gap: 0.75rem;
     }
-    .logo-circle {
-      width: 34px;
-      height: 34px;
-      font-size: 0.8rem;
+    .circle-logo {
+      width: 36px;
+      height: 36px;
     }
   }
 </style>

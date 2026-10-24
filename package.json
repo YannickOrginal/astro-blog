@@ -1,26 +1,40 @@
-{
-  "name": "astro-blog",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.23.4"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "generate-types": "wrangler types"
-  },
-  "dependencies": {
-    "@astrojs/check": "^0.9.12",
-    "@astrojs/cloudflare": "^14.4.2",
-    "@astrojs/mdx": "^8.1.1",
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.4.2",
-    "sharp": "^0.35.0",
-    "typescript": "^6.0.3",
-    "wrangler": "^4.152.0"
-  }
+﻿{
+    "name":  "astro-blog",
+    "type":  "module",
+    "version":  "0.0.1",
+    "engines":  {
+                    "node":  "\u003e=22.23.4"
+                },
+    "scripts":  {
+                    "dev":  "astro dev",
+                    "build":  "astro build",
+                    "preview":  "astro preview",
+                    "astro":  "astro",
+                    "generate-types":  "wrangler types"
+                },
+    "dependencies":  {
+                         "@astrojs/check":  "^0.9.12",
+                         "@astrojs/cloudflare":  "^14.4.2",
+                         "@astrojs/mdx":  "^8.1.1",
+                         "@astrojs/rss":  "^4.0.19",
+                         "@astrojs/sitemap":  "^3.7.4",
+                         "astro":  "^7.4.2",
+                         "sharp":  "^0.35.0",
+                         "typescript":  "^6.0.3",
+                         "wrangler":  "^4.35.0"
+                     },
+    "allowScripts":  {
+                         "esbuild@0.25.12":  true,
+                         "esbuild@0.27.0":  true,
+                         "sharp@0.34.5":  true,
+                         "sharp@0.33.5":  true,
+                         "sharp@0.35.5":  true,
+                         "workerd@1.20260114.0":  true,
+                         "esbuild@0.28.2":  true,
+                         "workerd@1.20261019.1":  true
+                     },
+    "overrides":  {
+                      "undici":  "\u003e=7.31.0",
+                      "ws":  "\u003e=8.20.2"
+                  }
 }

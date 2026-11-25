@@ -14,6 +14,11 @@ const blog = defineCollection({
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),
 			heroImage: z.optional(image()),
+			// Optional metadata. Declared here so frontmatter like `tags:`
+			// is actually validated and exposed instead of silently dropped.
+			tags: z.array(z.string()).default([]),
+			draft: z.boolean().default(false),
+			aiAssisted: z.boolean().default(false),
 		}),
 });
 

@@ -1,16 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { postUrl } from '../lib/slugs';
 
-const posts = (await getCollection('blog')) || [];
-posts.sort((a, b) => {
-  const dateA = new Date(a.data?.pubDate || a.data?.date || 0).valueOf();
-  const dateB = new Date(b.data?.pubDate || b.data?.date || 0).valueOf();
-  return dateB - dateA;
-});
+const posts = (await getCollection('blog', ({ data }) => !data.draft)) || [];
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Layout title="Blog | Yannick Derouaux">
+<Layout title="Blog | Yannick Derouaux" description="Deep Dives zu Systemarchitekturen, Netzwerk-Segmentierung, Kraftwerksdokumentation und lokalen KI-Toolchains.">
   <div class="blog-container">
     <header class="blog-header">
       <h1 class="headline">Projekte-Blog &amp; Deep Dives</h1>
@@ -21,10 +18,10 @@ posts.sort((a, b) => {
 
     <div class="blog-stack">
       {posts.map((post) => {
-        const slug = post.id || post.slug || '';
-        const title = post.data?.title || post.id || 'Ohne Titel';
-        const desc = post.data?.description || '';
-        const rawDate = post.data?.pubDate || post.data?.date;
+        const slug = postUrl(post.id);
+        const title = post.data.title;
+        const desc = post.data.description;
+        const rawDate = post.data.pubDate;
         let formattedDate = '';
         if (rawDate) {
           const d = new Date(rawDate);
@@ -37,7 +34,7 @@ posts.sort((a, b) => {
             <h2 class="card-title">{title}</h2>
             {formattedDate && <time class="card-date">{formattedDate}</time>}
             {desc && <p class="card-desc">{desc}</p>}
-            <a href={'/blog/' + slug} class="card-action">Artikel lesen &rarr;</a>
+            <a href={slug} class="card-action">Artikel lesen &rarr;</a>
           </article>
         );
       })}

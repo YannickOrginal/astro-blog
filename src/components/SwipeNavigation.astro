@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import { postUrl } from '../lib/slugs';
+
+/**
+ * Swipe-Navigation.
+ *
+ * Reihenfolge der Seiten, in der gewischt wird:
+ *   Startseite → Blog-Übersicht → alle Beiträge (neuester zuerst) → Über mich
+ *
+ * Die Liste wird zur Buildzeit aus dem Content-Collection erzeugt, damit
+ * Blogbeiträge automatisch enthalten sind, sobald ein neuer Beitrag
+ * hinzukommt. Vorher war die Route-Liste hart auf drei Seiten genagelt,
+ * wodurch die Wischgeste auf Artikelseiten ins Leere lief.
+ */
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const routes = ['/', '/blog', ...posts.map((post) => postUrl(post.id)), '/about'];
+---
+
+<slot />
+
+<script is:inline define:vars={{ routes }}>
+  (() => {
+    const MIN_SWIPE_X = 60;      // Mindestbreite in px für eine Wischgeste
+    const MAX_DRIFT_Y = 80;      // max. vertikale Abweichung, sonst ist es Scrollen
+    const RATIO = 1.5;           // horizontal muss klar dominant sein
+
+    function setupSwipe() {
+      const normalize = (p) => p.replace(/\/+$/, '') || '/';
+      const index = routes.indexOf(normalize(window.location.pathname));
+      if (index === -1) return;
+
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+
+      // Nicht starten, wenn der Finger in einem horizontal scrollbaren
+      // Container (Code-Blöcke) oder in einem Formular landet.
+      const isBlockedTarget = (el) => {
+        if (!(el instanceof Element)) return false;
+        if (el.closest('pre, textarea, input, select, [role="dialog"]')) return true;
+        let node = el;
+        while (node && node !== document.body) {
+          const style = getComputedStyle(node);
+          if (/(auto|scroll)/.test(style.overflowX) && node.scrollWidth > node.clientWidth) return true;
+          node = node.parentElement;
+        }
+        return false;
+      };
+
+      const onTouchStart = (e) => {
+        if (e.touches.length !== 1) { tracking = false; return; }
+        tracking = !isBlockedTarget(e.target);
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      };
+
+      const onTouchEnd = (e) => {
+        if (!tracking || e.changedTouches.length === 0) return;
+        tracking = false;
+
+        const deltaX = e.changedTouches[0].clientX - startX;
+        const deltaY = e.changedTouches[0].clientY - startY;
+
+        if (Math.abs(deltaY) > MAX_DRIFT_Y) return;
+        if (Math.abs(deltaX) < MIN_SWIPE_X) return;
+        if (Math.abs(deltaX) < Math.abs(deltaY) * RATIO) return;
+
+        const next = deltaX < 0 ? index + 1 : index - 1;
+        if (next < 0 || next >= routes.length) return;   // am Anfang/Ende: kein Wrapping
+        window.location.href = routes[next];
+      };
+
+      window.addEventListener('touchstart', onTouchStart, { passive: true });
+      window.addEventListener('touchend', onTouchEnd, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupSwipe);
+    } else {
+      setupSwipe();
+    }
+    document.addEventListener('astro:page-load', setupSwipe);
+  })();
+</script>

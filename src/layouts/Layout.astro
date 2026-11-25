@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import AiBadge from '../components/AiBadge.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/global.css';
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
   description?: string;
 }
 
-const { title = 'Yannick Derouaux | Living Proof', description = 'Persönliche Website und Blog zu Systemarchitektur, Engineering und IT.' } = Astro.props;
+const { title = `${SITE_TITLE} | Living Proof`, description = SITE_DESCRIPTION } = Astro.props;
 ---
 
 <!doctype html>
